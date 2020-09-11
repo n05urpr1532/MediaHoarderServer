@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/Apps-Community" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/Apps-Core" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/Apps-GCE" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/Install" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/PTS-Clone" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/PTS-Team" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/PTS-Team.wiki" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/PTS-Update" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/PTS-Vault" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/PTS-WordPress" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/Traefik" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MHA/d-ngele" vcs="Git" />
+  </component>
+</project>

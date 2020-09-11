@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create Basic Directories
+      file: 'path={{item}} state=directory mode=0775 owner=1000 group=1000 recurse=true'
+      with_items:
+        - '/opt/mhs/apps-community'
+        - '/opt/mhs/apps-core'
+        - '/opt/mhs/apps-local'
+        - '/opt/mhs/etc'
+        - '/var/mhs/log'
+      ignore_errors: yes

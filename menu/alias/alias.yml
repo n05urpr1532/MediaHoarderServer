@@ -1,0 +1,76 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+
+    - name: Install command for MHS entrypoint (mhs)
+      template:
+        src: mhs
+        dest: /bin/mhs
+        force: yes
+        mode: 0775
+        owner: root
+
+    - name: Install command for MHS backup and restore (mhs-backup)
+      template:
+        src: mhs-backup
+        dest: /bin/mhs-backup
+        force: yes
+        mode: 0775
+        owner: root
+
+    - name: Install command for pruning docker containers (mhs-docker-prune)
+      template:
+        src: mhs-docker-prune
+        dest: /bin/mhs-docker-prune
+        force: yes
+        mode: 0775
+        owner: root
+
+    - name: Install command for purging old journal files (mhs-journal-purge)
+      template:
+        src: mhs-journal-purge
+        dest: /bin/mhs-journal-purge
+        force: yes
+        mode: 0775
+        owner: root
+
+    - name: Install command for listing systemd services (mhs-services-list)
+      template:
+        src: mhs-services-list
+        dest: /bin/mhs-services-list
+        force: yes
+        mode: 0775
+        owner: root
+
+    - name: Install command for updating MergerFS (mhs-update-mergerfs)
+      template:
+        src: mhs-update-mergerfs
+        dest: /bin/mhs-update-mergerfs
+        force: yes
+        mode: 0775
+        owner: root
+
+    - name: Install command for updating rclone (mhs-update-rclone)
+      template:
+        src: mhs-update-rclone
+        dest: /bin/mhs-update-rclone
+        force: yes
+        mode: 0775
+        owner: root
+
+    - name: Install command to add a dedicated user for MHS (mhs-user-add)
+      template:
+        src: mhs-user-add
+        dest: /bin/mhs-user-add
+        force: yes
+        mode: 0775
+        owner: root
+
+    - name: Install shortcut command for rebooting the server (reboot)
+      template:
+        src: reboot
+        dest: /bin/reboot
+        force: yes
+        mode: 0775
+        owner: root

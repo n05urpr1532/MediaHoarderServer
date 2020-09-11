@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# Title:      PGBlitz (Reference Title File)
+# Author(s):  Admin9705
+# URL:        https://pgblitz.com - http://github.pgblitz.com
+# GNU:        General Public License v3.0
+################################################################################
+
+source /opt/mhs/lib/menu/functions/functions.sh
+source /opt/mhs/lib/menu/functions/start.sh
+source /opt/mhs/lib/menu/functions/install.sh
+
+sudocheck
+missingpull
+
+# pg deploy contains pgdeploy at end
+clear
+pginstall

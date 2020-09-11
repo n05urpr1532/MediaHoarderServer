@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Disable existing MOTD
+      shell: chmod -x /etc/update-motd.d/*
+      become: yes
+
+    - name: Deploy Dynamic MOTD
+      file:
+        path: /etc/update-motd.d
+        state: directory
+        mode: 0775
+      become: yes
+
+    - name: Import MOTD Files
+      copy: 'src={{item}} dest=/etc/update-motd.d/{{item}} force=yes mode=0775'
+      with_items:
+        - 00-header
+        - 10-sysinfo
+      become: yes
+
+    - name: Install lolcat
+      apt:
+        name: "lolcat"
+        state: present
+        update_cache: yes
+      become: yes
+
+    - cron:
+        name: 'Update MOTD'
+        user: 'root'
+        minute: '10'
+        job: 'update-motd'
+        state: absent
+      become: yes

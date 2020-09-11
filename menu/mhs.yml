@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  vars:
+    extra: ''
+
+  roles:
+    - { role: autodelete, tags: ['autodelete'] }
+    - { role: clean, tags: ['clean'] }
+    - { role: docker-install, tags: ['docker-install'] }
+    - { role: docstart, tags: ['docstart'] }
+    - { role: gcloud_sdk, tags: ['gcloud_sdk'] }
+    - { role: journal, tags: ['journal'] }
+    - { role: mergerfs-install, tags: ['mergerfs-install'] }
+    - { role: mergerfsupdate, tags: ['mergerfsupdate'] }
+    - { role: nvidia, tags: ['nvidia'] }
+    - { role: plex_dupefinder, tags: ['plex_dupefinder'] }
+    - { role: plexpatrol, tags: ['plexpatrol'] }
+    - { role: remove, tags: ['remove'] }
+    - { role: stefangweichinger.ansible_rclone, tags: ['rclone-install'] }
+    - { role: system, tags: ['system'] }
+    - { role: traktarr, tags: ['traktarr'] }
+    - { role: update, tags: ['update'] }

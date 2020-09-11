@@ -1,0 +1,36 @@
+[submodule "MHA-PTS-Team"]
+	path = MHA/PTS-Team
+	url = https://github.com/n05urpr1532-MHA-Team/PTS-Team.git
+[submodule "MHA/PTS-Team.wiki"]
+	path = MHA/PTS-Team.wiki
+	url = https://github.com/n05urpr1532-MHA-Team/PTS-Team.wiki.git
+[submodule "MHA/Install"]
+	path = MHA/Install
+	url = https://github.com/n05urpr1532-MHA-Team/Install.git
+[submodule "MHA/PTS-Clone"]
+	path = MHA/PTS-Clone
+	url = https://github.com/n05urpr1532-MHA-Team/PTS-Clone.git
+[submodule "MHA/PTS-Update"]
+	path = MHA/PTS-Update
+	url = https://github.com/n05urpr1532-MHA-Team/PTS-Update.git
+[submodule "MHA/PTS-Vault"]
+	path = MHA/PTS-Vault
+	url = https://github.com/n05urpr1532-MHA-Team/PTS-Vault.git
+[submodule "MHA/PTS-WordPress"]
+	path = MHA/PTS-WordPress
+	url = https://github.com/n05urpr1532-MHA-Team/PTS-WordPress.git
+[submodule "MHA/Traefik"]
+	path = MHA/Traefik
+	url = https://github.com/n05urpr1532-MHA-Team/Traefik.git
+[submodule "MHA/Apps-Core"]
+	path = MHA/Apps-Core
+	url = https://github.com/n05urpr1532-MHA-Team/Apps-Core.git
+[submodule "MHA/Apps-Community"]
+	path = MHA/Apps-Community
+	url = https://github.com/n05urpr1532-MHA-Team/Apps-Community.git
+[submodule "MHA/Apps-GCE"]
+	path = MHA/Apps-GCE
+	url = https://github.com/n05urpr1532-MHA-Team/Apps-GCE.git
+[submodule "MHA/d-ngele"]
+	path = MHA/d-ngele
+	url = https://github.com/n05urpr1532-MHA-Team/d-ngele.git

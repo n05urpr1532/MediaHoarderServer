@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+## Cleanup old journal files
+journalctl --flush
+journalctl --rotate
+journalctl --vacuum-time=1s
+journalctl --vacuum-size=10M

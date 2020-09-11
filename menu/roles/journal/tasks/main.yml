@@ -1,0 +1,16 @@
+---
+- name: Install journald fix
+  template:
+    src: journald.conf
+    dest: /etc/systemd/journald.conf
+    force: true
+
+- name: systemd reloading
+  systemd:
+    daemon_reload: true
+
+- name: restart journald
+  systemd:
+    daemon_reload: true
+    name: systemd-journald
+    state: restarted
