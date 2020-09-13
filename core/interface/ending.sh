@@ -9,26 +9,16 @@ fi
 #
 clear
 printf '
-┌─────────────────────────────────────┐
-│         -==   Team MHS  ==-         │
-│ ————————————————————————————————————│
-│ Restart MHS:              mhs       │
-│ Update  MHS:              ptsupdate │
-│ View the MHS Logs:        blitz     │
-│ Download Your MHS Fork:   pgfork    │
-│                                     │
-│ ————————————————————————————————————│
-│ Thanks For Being Part of the Team   │
-│                                     │
-│ Thanks to:                          │
-│                                     │
-│ Davaz, Deiteq, FlickerRate,         │
-│ ClownFused, MrDoob, Sub7Seven,      │
-│ TimeKills, The_Creator, Desimaniac, │
-│ l3uddz, RXWatcher, Calmcacil,       │
-│ ΔLPHΔ , Maikash , Porkie            │
-│ CDN_RAGE , hawkinzzz , The_DeadPool │
-│ BugHunter : Krallenkiller           │
-│                                     │
-└─────────────────────────────────────┘
+┌──────────────────────────────────────┐
+│     -== Media Hoarder Server ==-     │
+│ ———————————————————————————————————— │
+│                                      │
+│   Restart MHS command:      mhs      │
+│                                      │
+│ ———————————————————————————————————— │
+│                                      │
+│             See you soon !           │
+│                                      │
+└──────────────────────────────────────┘
+
 '
