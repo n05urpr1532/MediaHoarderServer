@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Register Project
+      shell: 'cat /var/mhs/state/pg.number'
+      register: serverid
+
+    - name: Installing EDGE
+      git:
+        repo: 'https://github.com/PGBlitz/PGBlitz.com'
+        dest: '/opt/mhs/lib'
+        version: Edge
+        force: yes
+      when: serverid.stdout == "edge"
+
+    - name: 'Installing Version {{serverid.stdout}}'
+      git:
+        repo: 'https://github.com/PGBlitz/PGBlitz.com'
+        dest: '/opt/mhs/lib'
+        version: '{{serverid.stdout}}'
+        force: yes
+      when: not serverid.stdout == "edge"
+      ignore_errors: True
+
+    - name: 'Stops First Time Run'
+      shell: 'touch /var/mhs/state/ask.yes'
+      register: program

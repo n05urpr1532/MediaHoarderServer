@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+source /opt/mhs/lib/backup-and-restore/functions.sh
+source /opt/mhs/lib/backup-and-restore/pgvault.func
+initial2
+backup_process

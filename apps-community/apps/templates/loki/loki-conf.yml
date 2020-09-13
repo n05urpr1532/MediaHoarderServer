@@ -1,0 +1,13 @@
+- name: Creating folder
+  file: 'path={{item}} state=directory mode=0775 owner=1000 group=1000'
+  with_items:
+    - '/opt/mhs/apps-data/loki'
+
+- name: 'Copying config'
+  shell: 'cp -r /opt/mhs/lib/apps-community/apps/templates/loki/local-config.yaml /opt/mhs/apps-data/loki/local-config.yaml'
+
+# scripts permissions
+- name: 'Setting permissions for {{pgrole}}'
+  shell: 'chmod -R 775 /opt/mhs/apps-data/{{pgrole}}'
+- name: 'set owner rights for {{pgrole}}'
+  shell: 'chown -cR 1000:1000 /opt/mhs/apps-data/{{pgrole}}'

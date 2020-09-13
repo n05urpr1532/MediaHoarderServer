@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+tail -n 100 /var/mhs/log/drive/*.log
+tail -n 100 /var/mhs/log/uploader/*.log

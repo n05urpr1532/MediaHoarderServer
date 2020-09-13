@@ -1,0 +1,628 @@
+#!/usr/bin/env bash
+
+runningcheck() {
+  initial2
+  runcheck5=$(docker ps | grep ${program_var})
+  if [[ "$runcheck5" != "" ]]; then running=1; else running=0; fi
+}
+
+initial() {
+  rm -rf /var/mhs/state/pgvault.output 1> /dev/null 2>&1
+  rm -rf /var/mhs/state/pgvault.buildup 1> /dev/null 2>&1
+  rm -rf /var/mhs/state/program.temp 1> /dev/null 2>&1
+  rm -rf /var/mhs/state/app.list 1> /dev/null 2>&1
+  rm -rf /var/mhs/state/pgvault.output 1> /dev/null 2>&1
+  touch /var/mhs/state/pgvault.output
+  touch /var/mhs/state/program.temp
+  touch /var/mhs/state/app.list
+  touch /var/mhs/state/pgvault.buildup
+  touch /var/mhs/state/pgvault.output
+  touch /var/mhs/state/rclone.size
+  space=$(cat /var/mhs/state/data.location)
+  # To Get Used Space
+  used=$(df -h /var/mhs/backups | tail -n +2 | awk '{print $3}')
+  # To Get All Space
+  capacity=$(df -h /var/mhs/backups | tail -n +2 | awk '{print $2}')
+  # Percentage
+  percentage=$(df -h /var/mhs/backups | tail -n +2 | awk '{print $5}')
+}
+
+initial2() {
+  path=$(cat /var/mhs/state/server.hd.path)
+  tarlocation=$(cat /var/mhs/state/data.location)
+  program_size=$(cat /var/mhs/state/rclone.size)
+  program_var=$(cat /tmp/program_var)
+  server_id=$(cat /var/mhs/state/server.id)
+}
+
+final() {
+  echo
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  read -p '✅ Process Complete! | PRESS [ENTER] ' typed < /dev/tty
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  bash /opt/mhs/lib/backup-and-restore/pgvault.sh
+  exit
+}
+
+queued() {
+  echo
+  read -p "⛔️ ERROR - $typed Already Queued! | Press [ENTER] " typed < /dev/tty
+}
+
+badserver() {
+  echo
+  read -p '⛔️ ERROR - Type an Exact Server Name | Press [ENTER] ' typed < /dev/tty
+}
+
+#not used yet
+rclonelist() {
+  ls -l /mnt/gdrive/mhs/backup | grep "^d" | awk '{print $9}' > pgvault.serverlist
+}
+
+value() {
+  bash /opt/mhs/lib/core/pgbox/value.sh
+}
+
+pgboxrecall() {
+  ls -p /opt/mhs/lib/apps-core | grep -v / > /var/mhs/state/pgvault.apprecall
+  while read p; do
+    sed -i "/^$p\b/Id" /var/mhs/state/pgvault.apprecall
+  done < /opt/mhs/lib/backup-and-restore/exempt.list
+
+  while read p; do
+    sed -i "/^$p\b/Id" /var/mhs/state/pgvault.apprecall
+    basename "$p" .yml >> /var/mhs/state/pgvault.apprecall
+  done < /var/mhs/state/pgvault.apprecall
+}
+
+mathprime() {
+  ### List Out Apps In Readable Order (One's Not Installed)
+  num=0
+  rm -rf /var/mhs/state/program.temp 1> /dev/null 2>&1
+  while read p; do
+    echo -n $p >> /var/mhs/state/program.temp
+    echo -n " " >> /var/mhs/state/program.temp
+    num=$((num + 1))
+    if [ "$num" == 7 ]; then
+      num=0
+      echo " " >> /var/mhs/state/program.temp
+    fi
+  done < /var/mhs/state/pgvault.apprecall
+}
+
+################################################ FOR BACKUP - START
+apprecall() {
+  tree -d -L 1 /opt/mhs/apps-data | awk '{print $2}' | tail -n +2 | head -n -2 > /var/mhs/state/pgvault.apprecall
+  while read p; do
+    sed -i "/^$p\b/Id" /var/mhs/state/pgvault.apprecall
+  done < /opt/mhs/lib/backup-and-restore/exempt.list
+
+  ### Blank Out Temp List
+  rm -rf /var/mhs/state/program.temp && touch /var/mhs/state/program.temp
+  mathprime
+}
+
+buildup() {
+  echo "$typed" >> /var/mhs/state/pgvault.buildup
+  sed -i "/^$typed\b/Id" /var/mhs/state/pgvault.apprecall
+
+  num=0
+  rm -rf /var/mhs/state/pgvault.output 1> /dev/null 2>&1
+  while read p; do
+    echo -n $p >> /var/mhs/state/pgvault.output
+    echo -n " " >> /var/mhs/state/pgvault.output
+    if [ "$num" == 7 ]; then
+      num=0
+      echo " " >> /var/mhs/state/pgvault.output
+    fi
+  done < /var/mhs/state/pgvault.buildup
+
+  mathprime
+  vaultbackup
+}
+################################################ FOR BACKUP - END
+serverprime() {
+  tree -d -L 1 /mnt/gdrive/mhs/backup | awk '{print $2}' | tail -n +2 | head -n -2 > /tmp/server.list
+
+  ### List Out Apps In Readable Order (One's Not Installed)
+  num=0
+  rm -rf /var/mhs/state/program.temp 1> /dev/null 2>&1
+  while read p; do
+    echo -n $p >> /var/mhs/state/program.temp
+    echo -n " " >> /var/mhs/state/program.temp
+    num=$((num + 1))
+    if [ "$num" == 7 ]; then
+      num=0
+      echo " " >> /var/mhs/state/program.temp
+    fi
+  done < /tmp/server.list
+
+  servers=$(cat /var/mhs/state/program.temp)
+  server_id=$(cat /var/mhs/state/server.id)
+
+  tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 Vault ~ Server Recall
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📂 Current [${server_id}] & Prior Servers Detected:
+
+$servers
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Z] Exit
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+  read -p '🌍 Type Server Name | Press [ENTER]: ' server < /dev/tty
+  echo $server > /tmp/server.select
+
+  if [[ "$server" == "exit" || "$server" == "Exit" || "$server" == "EXIT" || "$server" == "z" || "$server" == "Z" ]]; then exit; fi
+
+  current2=$(cat /tmp/server.list | grep "\<$server\>")
+  if [ "$current2" == "" ]; then
+    badserver
+    serverprime
+  fi
+
+  tempserver=$server
+  ls -l /mnt/gdrive/mhs/backup/$tempserver | awk '{print $9}' | tail -n +2 > /var/mhs/state/pgvault.restoreapps
+
+  ### Blank Out Temp List
+  rm -rf /var/mhs/state/pgvault.apprecall 1> /dev/null 2>&1
+  touch /var/mhs/state/pgvault.apprecall
+
+  while read p; do
+    basename "$p" .tar >> /var/mhs/state/pgvault.apprecall
+  done < /var/mhs/state/pgvault.restoreapps
+
+  ### Blank Out Temp List
+  rm -rf /var/mhs/state/program.temp 1> /dev/null 2>&1
+  touch /var/mhs/state/program.temp
+  mathprime
+}
+
+buildup2() {
+  echo "$typed" >> /var/mhs/state/pgvault.buildup
+  sed -i "/^$typed\b/Id" /var/mhs/state/pgvault.apprecall
+
+  num=0
+  rm -rf /var/mhs/state/pgvault.output 1> /dev/null 2>&1
+  while read p; do
+    echo -n $p >> /var/mhs/state/pgvault.output
+    echo -n " " >> /var/mhs/state/pgvault.output
+    if [ "$num" == 7 ]; then
+      num=0
+      echo " " >> /var/mhs/state/pgvault.output
+    fi
+  done < /var/mhs/state/pgvault.buildup
+
+  mathprime
+  vaultrestore
+}
+################################################ FOR RESTORE - START
+
+################################################ FOR RESTORE - END
+
+######################################################## START - PG Vault Backup
+
+backup_all_start() {
+
+  while read p; do
+    tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Vault - Backing Up: $p
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+
+    sleep 2.5
+
+    # Store Used Program
+    echo $p > /tmp/program_var
+    # Execute Main Program
+    backup_process
+
+    sleep 2
+  done < /var/mhs/state/pgvault.apprecall
+  final
+}
+
+backup_start() {
+  while read p; do
+    tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Vault - Backing Up: $p
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+
+    sleep 2.5
+
+    # Store Used Program
+    echo $p > /tmp/program_var
+    # Execute Main Program
+    backup_process
+
+    sleep 2
+  done < /var/mhs/state/pgvault.buildup
+  final
+}
+
+backup_process() {
+  initial2
+  ##### Stop Docker Container if Running
+  runningcheck
+  if [[ "$running" == "1" ]]; then
+    tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+↘️  Stopping Docker Container - $program_var
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+    sleep 1
+    docker stop $program_var 1> /dev/null 2>&1
+  fi
+
+  ###### Start the Backup Process - Backup Locally First
+  tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+↘️  Zipping Data Locally - $program_var
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+
+  path=$(cat /var/mhs/state/server.hd.path)
+  tarlocation=$(cat /var/mhs/state/data.location)
+  server_id=$(cat /var/mhs/state/server.id)
+
+  tar \
+  --warning=no-file-changed --ignore-failed-read --absolute-names --warning=no-file-removed \
+  --exclude-from=/opt/mhs/lib/backup-and-restore/exclude.list \
+  -C /opt/mhs/apps-data/${program_var} -cvf ${tarlocation}/${program_var}.tar ./
+
+  ##### Restart Docker Application if was Running Prior
+  if [[ "$running" == "1" ]]; then
+    tee <<- EOF
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+↘️  Restarting Docker Application - $program_var
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+    sleep 2
+    docker restart $program_var 1> /dev/null 2>&1
+  fi
+
+  ###### Backing Up Files to GDrive
+  tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+↘️  Sending Zipped Data to Google Drive - $program_var
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+  useragent="$(cat /var/mhs/state/uagent)"
+  bwlimit="off"
+
+  vfs_dcs="64M"
+  vfs_mt="580G"
+  vfs_t="1"
+  vfs_c="2"
+
+  rclone --config /opt/mhs/etc/rclone/rclone.conf mkdir gdrive:/mhs/backup/${server_id} 1> /dev/null 2>&1
+
+  rclone moveto ${tarlocation}/${program_var}.tar \
+  gdrive:/mhs/backup/${server_id}/${program_var}.tar \
+  --config /opt/mhs/etc/rclone/rclone.conf \
+  -v --checksum --stats-one-line --stats 1s --progress \
+  --tpslimit=10 \
+  --checkers="$vfs_c" \
+  --transfers="$vfs_t" \
+  --no-traverse \
+  --fast-list \
+  --bwlimit="$bwlimit" \
+  --drive-chunk-size="$vfs_dcs" \
+  --user-agent="$useragent"
+
+  ##### Remove File Incase
+  rm -rf ${tarlocation}/${program_var}.tar 1> /dev/null 2>&1
+}
+######################################################## END - PG Vault Backup
+#
+##################################################### START - PG Vault Restore
+restore_all_start() {
+
+  while read p; do
+    tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Vault - Restoring: $p
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+
+    sleep 2.5
+
+    # Store Used Program
+    echo $p > /tmp/program_var
+    # Execute Main Program
+    restore_process
+
+    sleep 2
+  done < /var/mhs/state/pgvault.apprecall
+  final
+}
+
+restore_start() {
+
+  while read p; do
+    tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Vault - Restoring: $p
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+
+    sleep 2.5
+
+    # Store Used Program
+    echo $p > /tmp/program_var
+    # Execute Main Program
+    restore_process
+
+    sleep 2
+  done < /var/mhs/state/pgvault.buildup
+  final
+}
+
+restore_process() {
+  initial2
+  srecall=$(cat /tmp/server.select)
+  tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+↘️  Determining Initial File Size - $program_var
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+  size=$(du -sh --apparent-size /mnt/gdrive/mhs/backup/${srecall}/${program_var}.tar | /usr/bin/awk '{print $1}')
+  sleep 2
+  echo "Initial File Size: $size"
+  sleep 2
+
+  ###### Backing Up Files to GDrive
+  tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+↘️  Downloading Data From Google Drive - $program_var
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+
+  rclone --config /opt/mhs/etc/rclone/rclone.conf --stats-one-line \
+  --stats 1s --progress \
+  copy gdrive:/mhs/backup/${srecall}/${program_var}.tar \
+  ${tarlocation} \
+  -v --checksum --drive-chunk-size=64M --transfers=8
+
+  ##### Stop Docker Container if Running
+  runningcheck
+  if [ "$running" == "1" ]; then
+    tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+↘️  Stopping Docker Container - $program_var
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+    sleep 1
+    docker stop $program_var 1> /dev/null 2>&1
+  fi
+
+  ###### Start the Backup Process - Backup Locally First
+  tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+↘️  UnZipping & Restoring Data - $program_var
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+
+  mkdir -p "/opt/mhs/apps-data/${program_var}"
+  rm -rf "/opt/mhs/apps-data/${program_var}/*"
+  chown -R 1000:1000 "/opt/mhs/apps-data/${program_var}"
+  chmod -R 775 "/opt/mhs/apps-data/${program_var}"
+  tar -C /opt/mhs/apps-data/${program_var} -xvf ${tarlocation}/${program_var}.tar
+  chown -R 1000:1000 "/opt/mhs/apps-data/${program_var}"
+  chmod -R 775 "/opt/mhs/apps-data/${program_var}"
+
+  ##for rebuild plex and more ##
+  value
+
+  ##rebuild app after restore
+  if [[ -e "/opt/mhs/lib/apps-core/$program_var.yml" ]]; then ansible-playbook /opt/mhs/lib/apps-core/$program_var.yml; fi
+  if [[ -e "/opt/mhs/lib/apps-community/$program_var.yml" ]]; then ansible-playbook /opt/mhs/lib/apps-community/apps/$program_var.yml; fi
+  if [[ -e "/opt/mhs/apps-local/$program_var.yml" ]]; then ansible-playbook /opt/mhs/apps-local/apps/$program_var.yml; fi
+
+  ##### Restart Docker Application if was Running Prior
+  if [[ "$running" == "1" ]]; then
+    tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+↘️  Restarting Docker Application - $program_var
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+    sleep 2
+    docker restart $program_var 1> /dev/null 2>&1
+  fi
+
+  ##### Remove File Incase
+  rm -rf ${tarlocation}/${program_var}.tar 1> /dev/null 2>&1
+}
+##################################################### END - PG Vault Restore
+#
+##################################################### START - Backup Interface
+vaultbackup() {
+  ### List Out Apps In Readable Order (One's Not Installed)
+  notrun=$(cat /var/mhs/state/program.temp)
+  buildup=$(cat /var/mhs/state/pgvault.output)
+
+  if [[ "$buildup" == "" ]]; then buildup="NONE"; fi
+  tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 Vault ~ Data Storage
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📂 App Data available to Backup
+
+$notrun
+
+💾 Apps Queued for Backup
+
+$buildup
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[A] Backup
+[Z] Exit
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+  read -p '🌍 Type APP for QUEUE | Type all to backup all apps | Press [ENTER]: ' typed < /dev/tty
+
+  if [[ "$typed" == "all" || "$typed" == "All" || "$typed" == "ALL" ]]; then
+    backup_all_start
+  fi
+  if [[ "$typed" == "backup" || "$typed" == "a" || "$typed" == "A" ]]; then backup_start; fi
+  if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then exit; fi
+
+  current2=$(cat /var/mhs/state/pgvault.buildup | grep "\<$typed\>")
+  if [ "$current2" != "" ]; then
+    queued
+    vaultbackup
+  fi
+
+  cat /var/mhs/state/pgvault.buildup > /tmp/appcheck.5
+  cat /var/mhs/state/pgvault.apprecall >> /tmp/appcheck.5
+  current1=$(cat /tmp/appcheck.5 | grep "\<$typed\>")
+  if [[ "$current1" == "" ]]; then badinput && vaultbackup; fi
+
+  buildup
+}
+##################################################### END - Backup Interface
+#
+##################################################### START - Restore Interface
+vaultrestore() {
+  notrun=$(cat /var/mhs/state/program.temp)
+  buildup=$(cat /var/mhs/state/pgvault.output)
+
+  if [ "$buildup" == "" ]; then buildup="NONE"; fi
+  tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 Vault ~ Data Recall
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📂 App Data available to Restore
+
+$notrun
+
+💾 Apps Queued for Restore
+
+$buildup
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[A] Restore
+[Z] Exit
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+  read -p '🌍 Type APP for QUEUE | Type all to restore all apps | Press [ENTER]: ' typed < /dev/tty
+
+  if [[ "$typed" == "all" || "$typed" == "All" || "$typed" == "ALL" ]]; then restore_all_start; fi
+
+  if [[ "$typed" == "restore" || "$typed" == "a" || "$typed" == "A" ]]; then restore_start; fi
+
+  if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then exit; fi
+
+  current2=$(cat /var/mhs/state/pgvault.buildup | grep "\<$typed\>")
+  if [ "$current2" != "" ]; then
+    queued
+    vaultrestore
+  fi
+  cat /var/mhs/state/pgvault.buildup > /tmp/appcheck.5
+  cat /var/mhs/state/pgvault.apprecall >> /tmp/appcheck.5
+  current2=$(cat /tmp/appcheck.5 | grep "\<$typed\>")
+  echo $current2 > /var/mhs/state/app_rebuild
+  #Rebuild Depending on Location
+  if [[ "$current2" == "" ]]; then badinput && vaultrestore; fi
+  buildup2
+}
+##################################################### START Primary Interface
+primaryinterface() {
+  initial2
+  tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁  Vault Interface
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🌵  Disk Used Space: $used of $capacity | $percentage Used Capacity
+
+[1] Data Backup
+[2] Data Restore
+[3] Current Server ID   : $server_id
+[4] Processing Location : $tarlocation
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Z] Exit
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+  read -p 'Type a Number | Press [ENTER]: ' typed < /dev/tty
+
+  if [[ "$typed" == "1" ]]; then
+    vaultbackup
+    primaryinterface
+  elif [[ "$typed" == "2" ]]; then
+    serverprime
+    vaultrestore
+    primaryinterface
+  elif [[ "$typed" == "3" ]]; then
+    echo "0" > /var/mhs/state/server.id.stored
+    bash /opt/mhs/lib/core/interface/serverid.sh
+    primaryinterface
+  elif [[ "$typed" == "4" ]]; then
+    bash /opt/mhs/lib/backup-and-restore/location.sh
+    primaryinterface
+  elif [[ "$typed" == "Z" || "$typed" == "z" ]]; then
+    exit
+  else
+    badinput
+    primaryinterface
+  fi
+}
+##################################################### END Primary Interface
+
+restorecheck() {
+  if [[ "$restoreid" == "[NOT-SET]" ]]; then
+    tee <<- EOF
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⛔️  WARNING! - You Must Set Your Recovery ID First! Restarting Process!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EOF
+    read -n 1 -s -r -p "Press [ANY] Key to Continue "
+    echo
+    primaryinterface
+    exit
+  fi
+}

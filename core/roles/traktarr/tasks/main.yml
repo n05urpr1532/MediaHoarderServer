@@ -1,0 +1,200 @@
+---
+- name: Check old Service's Existance
+  stat:
+    path: '/etc/systemd/system/traktarr.service'
+  register: pgp
+
+- name: Stop old service
+  service:
+    name: traktarr
+    state: stopped
+  when: pgp.stat.exists
+  ignore_errors: yes
+
+- name: Daemon - Traktarr stop
+  systemd: state=stopped name=traktarr daemon_reload=yes enabled=no
+  ignore_errors: yes
+
+- name: Remove old Basic Directories
+  file: 'path={{item}} state=absent mode=0775 owner=1000 group=1000'
+  with_items:
+    - '/opt/mhs/apps-data/traktarr/'
+    - '/etc/systemd/system/traktarr.service'
+  when: pgp.stat.exists == true
+  ignore_errors: yes
+
+- name: Check  Folder Existance
+  stat:
+    path: '/opt/mhs/apps-data/traktarr/'
+  register: traktarr
+
+- debug: msg="Final Notes Traktarr is now removed"
+  when: traktarr.stat.exists == False
+
+- name: Remove old symlink /usr/local/bin/traktarr
+  shell: 'rm -rf /usr/local/bin/traktarr'
+  ignore_errors: True
+
+- name: Remove old symlink /bin/traktarr
+  shell: 'rm -rf /bin/traktarr'
+  ignore_errors: True
+
+- name: Server ID
+  shell: 'cat /var/mhs/state/pg.serverid'
+  register: serverid
+
+- name: Sonarr API
+  shell: 'cat /var/mhs/state/traktarr/pgtrak.sapi'
+  register: sapi
+  ignore_errors: True
+
+- name: Radarr API
+  shell: 'cat /var/mhs/state/traktarr/pgtrak.rapi'
+  register: rapi
+  ignore_errors: True
+
+- name: Sonarr Profile
+  shell: 'cat /var/mhs/state/traktarr/pgtrak.sprofile'
+  register: sprofile
+  ignore_errors: True
+
+- name: Radarr Profile
+  shell: 'cat /var/mhs/state/traktarr/pgtrak.rprofile'
+  register: rprofile
+  ignore_errors: True
+
+- name: Trakt.tv Client
+  shell: 'cat /var/mhs/state/traktarr/pgtrak.client'
+  register: client
+  ignore_errors: True
+
+- name: Trakt.tv Secret
+  shell: 'cat /var/mhs/state/traktarr/pgtrak.secret'
+  register: secret
+  ignore_errors: True
+
+- name: Radarr Path
+  shell: 'cat /var/mhs/state/traktarr/pgtrak.rpath'
+  register: rpath
+  ignore_errors: True
+
+- name: Sonnar Path
+  shell: 'cat /var/mhs/state/traktarr/pgtrak.spath'
+  register: spath
+  ignore_errors: True
+
+- name: Max allowed Year | Sonarr
+  shell: 'cat /var/mhs/state/traktarr/pgtrakyear.max'
+  register: maxyear
+  ignore_errors: True
+
+- name: Min allowed Year | Sonarr
+  shell: 'cat /var/mhs/state/traktarr/pgtrakyear.min'
+  register: minyear
+  ignore_errors: True
+
+- name: Sonar Lang Profile | Sonarr
+  shell: 'cat /var/mhs/state/traktarr/pgtrak.lang'
+  register: lang
+  ignore_errors: True
+
+- name: Sonarr minimum availability | Radarr
+  shell: 'cat /var/mhs/state/traktarr/pgtrak.minimumavailability'
+  register: minimumavailability
+  ignore_errors: True
+
+- name: Remove old Install
+  shell: 'sudo rm -rf /opt/mhs/apps-data/traktarr'
+
+- name: Create traktarr directories
+  file: "path={{ item }} state=directory mode=0775 owner=1000 group=1000 recurse=yes"
+  with_items:
+    - /opt/mhs/apps-data/traktarr
+
+- name: Clone l3uddz/traktarr == HEAD
+  git:
+    repo: https://github.com/l3uddz/traktarr.git
+    dest: /opt/mhs/apps-data/traktarr
+    clone: yes
+    version: HEAD
+    force: yes
+  ignore_errors: yes
+
+- name: Clone l3uddz/traktarr repo == master
+  git:
+    repo: https://github.com/l3uddz/traktarr.git
+    dest: /opt/mhs/apps-data/traktarr
+    clone: yes
+    version: master
+    force: yes
+  ignore_errors: yes
+
+- name: Install pip requirements
+  pip:
+    requirements: /opt/mhs/apps-data/traktarr/requirements.txt
+    executable: pip3
+
+- name: Check config exists
+  stat:
+    path: "/opt/mhs/apps-data/traktarr/config.json"
+  register: traktarr_config
+
+- name: Import default config
+  template:
+    src: config.json.j2
+    dest: /opt/mhs/apps-data/traktarr/config.json
+    owner: '1000'
+    group: '1000'
+    mode: 0775
+    force: yes
+
+- name: Set traktarr.py as executable
+  file:
+    path: /opt/mhs/apps-data/traktarr/traktarr.py
+    owner: '1000'
+    group: '1000'
+    mode: a+x
+
+- name: Set directory permissions
+  file: "path=/opt/mhs/apps-data/traktarr state=directory owner=1000 group=1000 recurse=yes"
+
+- name: "Create /usr/local/bin symlink"
+  shell: 'sudo ln -s /opt/mhs/apps-data/traktarr/traktarr.py /usr/local/bin/traktarr'
+
+- name: Traktarr Service
+  template:
+    src: traktarr.service
+    dest: /etc/systemd/system/traktarr.service
+    force: yes
+
+- name: Daemon-Reload for Traktarr
+  systemd: state=stopped name=traktarr daemon_reload=yes enabled=no
+
+- name: Start Traktarr Service
+  systemd: state=started name=traktarr enabled=yes
+
+- name: 'Checking for existing symlink'
+  stat:
+    path: '/var/mhs/log/traktarr.log'
+  register: stat_result
+
+- name: Symlink log to log folder
+  shell: 'ln -s /opt/mhs/apps-data/traktarr/activity.log /var/mhs/log/traktarr.log'
+  when: stat_result.stat.exists == False
+  ignore_errors: yes
+
+# scripts permissions
+- name: 'Setting permissions on scripts'
+  shell: 'chown -cR 1000:1000 /opt/mhs/apps-data/traktarr'
+
+# scripts permissions
+- name: 'Setting permissions on scripts'
+  shell: 'chmod -cR 775 /opt/mhs/apps-data/traktarr'
+
+- name: Remove .githube folder and .git files
+  file: "path={{ item }} state=absent"
+  with_items:
+    - '/opt/mhs/apps-data/traktarr/.git'
+    - '/opt/mhs/apps-data/traktarr/.github'
+    - '/opt/mhs/apps-data/traktarr/assets'
+    - '/opt/mhs/apps-data/traktarr/.gitignore'

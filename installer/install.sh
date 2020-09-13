@@ -104,6 +104,9 @@ Please stand by...
 
 EOF
   logger "$(git clone -b ${MHS_GIT_REPOSITORY_BRANCH} --single-branch ${MHS_GIT_REPOSITORY_URL} /opt/mhs/lib 2>&1)"
+
+  # set VERSION
+  echo ${MHS_GIT_REPOSITORY_BRANCH} > /opt/mhs/lib/VERSION
 }
 
 ################################################################################

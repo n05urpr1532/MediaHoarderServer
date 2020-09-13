@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+nano /etc/systemd/system/$1.service && systemctl daemon-reload

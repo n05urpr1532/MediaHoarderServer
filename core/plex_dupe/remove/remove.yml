@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS ######################################################################
+    - name: Check Plex Dupefinder Existance
+      stat:
+        path: '/usr/local/bin/plex_dupefinder'
+      register: pgp
+
+    - name: Remove Plex Dupefinder Basic Directories
+      file: 'path={{item}} state=absent mode=0775 owner=1000 group=1000'
+      with_items:
+        - '/opt/mhs/plex_dupefinder'
+        - '/var/mhs/state/plex_dupefinder/'
+      when: pgp.stat.exists

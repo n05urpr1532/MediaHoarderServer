@@ -1,0 +1,34 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Check if Image Variable Exists
+      stat:
+        path: '/opt/mhs/apps-local'
+      register: pathcheck
+
+    - name: 'Transfer Image Variable'
+      shell: 'rm -rf /opt/mhs/apps-local'
+      when: pathcheck.stat.exists
+
+    - name: Register User for Personal Repo
+      shell: 'cat /var/mhs/state/boxpersonal.user'
+      register: boxuser
+
+    - name: Register Personal Repo
+      shell: 'cat /var/mhs/state/boxpersonal.repo'
+      register: boxrepo
+
+    - name: Register Personal Branch
+      shell: 'cat /var/mhs/state/boxpersonal.branch'
+      register: boxbranch
+
+    - name: 'Cloning {{boxuser.stdout}} Apps'
+      git:
+        repo: 'https://github.com/{{boxuser.stdout}}/{{boxrepo.stdout}}'
+        dest: '/opt/mhs/apps-local'
+        version: '{{boxbranch.stdout}}'
+        force: yes
+
+    - name: Set Permission and Owner
+      shell: 'chown -R 1000:1000 /opt/mhs/apps-local && chmod -R 775 /opt/mhs/apps-local'

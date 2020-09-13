@@ -1,0 +1,50 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'sonarrsyncarr'
+        image: 'syncarr/syncarr:1.2.1'
+
+    - name: 'Setting {{pgrole}} Volumes'
+      set_fact:
+        pg_volumes:
+          - '/etc/localtime:/etc/localtime:ro'
+
+    - name: 'Setting {{pgrole}} ENV'
+      set_fact:
+        pg_env:
+          PUID: '1000'
+          PGID: '1000'
+          SONARR_A_URL: 'http://sonarr:8984' #May need FQDN EX: sonarr.mydomain.com:443
+          SONARR_A_KEY: 'API_KEY'
+          SONARR_B_URL: 'http://sonarr4k:8989'
+          SONARR_B_KEY: 'SECOND API_KEY'
+          SONARR_B_PROFILE_ID: 'follow instructions here to get ID (https://github.com/syncarr/syncarr)'
+          SONARR_B_PATH: 'settoyourtvpath Example: (/mnt/unionfs/TV)'
+          SYNC_INTERVAL_SECONDS: '3600' #Updates every hours
+          LOG_LEVEL: '10'
+
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        networks:
+          - name: mhs
+            aliases:
+              - '{{pgrole}}'
+        state: started
+
+    - name: 'Stopping {{pgrole}}. Go configure Environment Variables in Portainer.'
+      docker_container:
+        name: '{{pgrole}}'
+        state: stopped
+

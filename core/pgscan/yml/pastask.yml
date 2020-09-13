@@ -1,0 +1,126 @@
+#########################################################################
+# Title:         Cloudbox: Plex Autoscan Role                           #
+# Author(s):     l3uddz, desimaniac                                     #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Services | Check if 'plex_autoscan.service' exists
+  stat:
+    path: "/etc/systemd/system/plex_autoscan.service"
+  register: plex_pas_config
+
+- name: Services | Stop 'plex_autoscan.service'
+  systemd:
+    name: plex_autoscan
+    state: stopped
+  when: plex_pas_config.stat.exists
+
+- name: Remove old Install
+  shell: 'sudo rm -rf /opt/mhs/apps-data/plexautoscan/'
+
+- name: Remove old service
+  shell: 'sudo rm -rf /etc/systemd/system/plex_autoscan.service'
+
+- name: Set plex.user fact | token
+  shell: 'cat /var/mhs/state/pgscan/plex.token'
+  register: plex_auth_token
+
+- name: Set plex.user fact | token
+  shell: 'cat /var/mhs/state/pgscan/plex.token'
+  register: plex_auth_token_display
+
+- name: Register ServerPass
+  shell: 'cat /var/mhs/state/pgscan/pgscan.serverpass'
+  register: plex_autoscan_server_pass
+
+- name: Register Fixmatch Lang
+  shell: 'cat /var/mhs/state/pgscan/fixmatch.lang'
+  register: fixmatchlang
+
+- name: Register Fixmatch status
+  shell: 'cat /var/mhs/state/pgscan/fixmatch.status'
+  register: fixmatchstatus
+
+- name: Register Plex Docker Image status
+  shell: 'cat /var/mhs/state/pgscan/plex.docker'
+  register: plex_docker_user
+
+- name: Create mounted.bin for trash
+  shell: 'touch /mnt/unionfs/mounted.bin'
+
+- name: Set User Permission  for Plex Folder | part 1
+  shell: 'chown 1000:1000 "/opt/mhs/apps-data/plex/database/Library/Application Support/"'
+
+- name: Set User Permission  for Plex Folder | part 2
+  shell: 'chown 1000:1000 /opt/mhs/apps-data/plex/database/Library/'
+
+- name: Display Plex Auth Token
+  debug:
+    msg: "Plex Auth Token: {{plex_auth_token_display.stdout}}"
+
+- name: Token Recall
+  shell: 'cat /var/mhs/state/pgscan/plex.token'
+  register: plex_auth_token
+
+- name: Register Plex Docker Image status
+  shell: 'cat /var/mhs/state/pgscan/plex.docker'
+  register: plex_docker_user
+
+- name: Settings | Install required packages
+  apt:
+    state: present
+    name:
+      - jq
+      - moreutils
+
+- name: Settings | Check if 'config.json' exists
+  stat:
+    path: "/opt/mhs/apps-data/plexautoscan/config.json"
+  register: plex_autoscan_config
+
+- name: Settings | New 'config.json' tasks
+  block:
+
+    - name: Create plex_autoscan directories
+      file: "path={{ item }} state=directory mode=0775 owner=1000 group=1000 recurse=yes"
+      with_items:
+        - '/opt/mhs/apps-data/plexautoscan/'
+        - '/opt/mhs/apps-data/plexautoscan/config'
+
+    - name: Settings | Import default 'config.json'
+      template:
+        src: /opt/mhs/lib/core/pgscan/templates/config.json.j2
+        dest: /opt/mhs/apps-data/plexautoscan/config/config.json
+        owner: '1000'
+        group: '1000'
+        mode: 0775
+        force: yes
+
+    - name: Token Recall
+      shell: 'cat /var/mhs/state/pgscan/plex.token'
+      register: plex_auth_token
+
+    - name: Register ServerPass
+      shell: 'cat /var/mhs/state/pgscan/pgscan.serverpass'
+      register: plex_autoscan_server_pass
+
+    - name: Register Fixmatch Lang
+      shell: 'cat /var/mhs/state/pgscan/fixmatch.lang'
+      register: fixmatchlang
+
+    - name: Register Fixmatch status
+      shell: 'cat /var/mhs/state/pgscan/fixmatch.status'
+      register: fixmatchstatus
+
+    - name: Register Plex Docker Image status
+      shell: 'cat /var/mhs/state/pgscan/plex.docker'
+      register: plex_docker_user
+
+  when: not plex_autoscan_config.stat.exists
+
+- name: 'Setting ownership on appdata'
+  shell: 'chown 1000:1000 /opt/mhs/apps-data/{{pgrole}}'

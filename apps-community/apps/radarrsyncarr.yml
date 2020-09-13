@@ -1,0 +1,50 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'radarrsyncarr'
+        image: 'syncarr/syncarr:1.2.1'
+
+    - name: 'Setting {{pgrole}} Volumes'
+      set_fact:
+        pg_volumes:
+          - '/etc/localtime:/etc/localtime:ro'
+
+    - name: 'Setting {{pgrole}} ENV'
+      set_fact:
+        pg_env:
+          PUID: '1000'
+          PGID: '1000'
+          RADARR_A_URL: 'http://radarr:7878' #may need FQDN EX: radarr.mydomain.com:443
+          RADARR_A_KEY: 'API_KEY'
+          RADARR_B_URL: 'http://radarr4k:7878' #may need FQDN EX: radarrrr.mydomain.com:443
+          RADARR_B_KEY: 'SECOND API_KEY'
+          RADARR_B_PROFILE_ID: 'follow instructions here to get ID (https://github.com/syncarr/syncarr)'
+          RADARR_B_PATH: 'settoyourmoviepath Example: (/mnt/unionfs/Movies)'
+          SYNC_INTERVAL_SECONDS: '3600' #Updates every hour
+          LOG_LEVEL: '10'
+
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        networks:
+          - name: mhs
+            aliases:
+              - '{{pgrole}}'
+        state: started
+
+    - name: 'Stopping {{pgrole}}. Go configure Environment Variables in Portainer.'
+      docker_container:
+        name: '{{pgrole}}'
+        state: stopped
+

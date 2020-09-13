@@ -1,0 +1,110 @@
+#########################################################################
+# Title:         Cloudbox: Plex Dupefinder Role                         #
+# Author(s):     l3uddz                                                 #
+# URL:           https://github.com/cloudbox/cloudbox                   #
+# --                                                                    #
+#         Part of the Cloudbox project: https://cloudbox.works          #
+#########################################################################
+#                   GNU General Public License v3.0                     #
+#########################################################################
+---
+- name: Set plex.user fact | token
+  shell: 'cat /var/mhs/state/plex_dupefinder/plex.token'
+  register: plex_auth_token
+
+- name: Set plex_dupe in automode
+  shell: 'cat /var/mhs/state/plex_dupefinder/plex.authdel'
+  register: authdel
+
+- name: Display Plex Auth Token
+  debug:
+    msg: "Plex Auth Token: {{ plex_auth_token.stdout }}"
+
+- name: Create plex_dupefinder directories
+  file: "path={{ item }} state=directory mode=0775 owner=1000 group=1000 recurse=yes"
+  with_items:
+    - /opt/mhs/plex_dupefinder
+
+- name: Remove old Install
+  shell: 'sudo rm -rf /opt/mhs/plex_dupefinder'
+
+- name: Create plex_dupefinder directories
+  file: "path={{ item }} state=directory mode=0775 owner=1000 group=1000 recurse=yes"
+  with_items:
+    - /opt/mhs/plex_dupefinder
+
+- name: Clone plex_dupefinder == HEAD
+  git:
+    repo: https://github.com/l3uddz/plex_dupefinder.git
+    dest: /opt/mhs/plex_dupefinder
+    clone: yes
+    version: HEAD
+    force: yes
+  ignore_errors: yes
+
+- name: Clone plex_dupefinder repo == master
+  git:
+    repo: https://github.com/l3uddz/plex_dupefinder.git
+    dest: /opt/mhs/plex_dupefinder
+    clone: yes
+    version: master
+    force: yes
+  ignore_errors: yes
+
+- name: Install pip requirements
+  pip:
+    requirements: /opt/mhs/plex_dupefinder/requirements.txt
+    executable: pip3
+
+- name: Check config exists
+  stat:
+    path: "/opt/mhs/etc/plex_dupefinder/config.json"
+  register: plex_dupefinder_config
+
+- name: Import default config
+  template:
+    src: config.json.j2
+    dest: /opt/mhs/etc/plex_dupefinder/config.json
+    owner: '1000'
+    group: '1000'
+    mode: 0775
+    force: no
+  when: not plex_dupefinder_config.stat.exists
+
+- name: Create a symbolic link to config
+  file:
+    src: /opt/mhs/etc/plex_dupefinder/config.json
+    dest: /opt/mhs/plex_dupefinder/config.json
+    owner: '1000'
+    group: '1000'
+    mode: 0775
+    state: link
+
+- name: Set plexdupes.py as executable
+  file:
+    path: /opt/mhs/plex_dupefinder/plex_dupefinder.py
+    owner: '1000'
+    group: '1000'
+    mode: a+x
+
+- name: "Create /usr/local/bin symlink"
+  file:
+    src: "/opt/mhs/plex_dupefinder/plex_dupefinder.py"
+    dest: "/usr/local/bin/plex_dupefinder"
+    state: link
+
+# scripts permissions
+- name: 'Setting permissions on scripts'
+  shell: 'chown -cR 1000:1000 /opt/mhs/plex_dupefinder'
+
+# scripts permissions
+- name: 'Setting permissions on scripts'
+  shell: 'chmod -cR 775 /opt/mhs/plex_dupefinder'
+
+- name: Remove .githube folder and .git files
+  file: "path={{ item }} state=absent"
+  with_items:
+    - '/opt/mhs/plex_dupefinder/.git'
+    - '/opt/mhs/plex_dupefinder/.github'
+    - '/opt/mhs/plex_dupefinder/assets'
+    - '/opt/mhs/plex_dupefinder/.gitignore'

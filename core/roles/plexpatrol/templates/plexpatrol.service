@@ -1,0 +1,15 @@
+[Unit]
+Description=Plex Patrol
+After=network-online.target
+
+[Service]
+User=0
+Group=0
+Type=simple
+WorkingDirectory=/opt/mhs/apps-data/plexpatrol
+ExecStart=/opt/mhs/apps-data/plexpatrol/patrol.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

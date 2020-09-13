@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+################################################################################
+# MergerFS updater
+################################################################################
+source /opt/mhs/lib/core/functions/update.sh
+
+sudocheck
+mergerfsupdate
+exitcheck

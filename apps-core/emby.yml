@@ -1,0 +1,113 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'emby'
+        intport: '8096'
+        extport: '8096'
+        intport2: '8920'
+        extport2: '8920'
+        image: 'emby/embyserver'
+
+    # CORE (MANDATORY) ############################################################
+    - name: 'Including cron job'
+      include_tasks: '/opt/mhs/lib/apps-core/_core.yml'
+
+    - name: 'XML Check'
+      stat:
+        path: /opt/mhs/apps-data/{{pgrole}}/config/system.xml
+      register: xmlcheck
+
+    # LABELS ######################################################################
+    - name: 'Adding Traefik for {{pgrole}}'
+      set_fact:
+        pg_labels:
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
+          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.frontend.headers.SSLRedirect: 'true'
+          traefik.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.frontend.headers.STSPreload: 'true'
+          traefik.frontend.headers.STSSeconds: '315360000'
+          traefik.frontend.headers.browserXSSFilter: 'true'
+          traefik.frontend.headers.contentTypeNosniff: 'true'
+          traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+          traefik.frontend.headers.forceSTSHeader: 'true'
+
+    - name: 'Setting {{pgrole}} Volumes'
+      set_fact:
+        pg_volumes:
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/opt/mhs/apps-data/{{pgrole}}:/config'
+          - '/var/mhs/transcodes:/transcode'
+
+    - name: 'Setting {{pgrole}} ENV'
+      set_fact:
+        pg_env:
+          UID: '1000'
+          GID: '1000'
+          GIDLIST: '1000'
+          NVIDIA_VISIBLE_DEVICES: 'all'
+          NVIDIA_DRIVER_CAPABILITIES: 'compute,video,utility'
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: Check /dev/dri exists
+      stat:
+        path: '/dev/dri'
+      register: dev_dri
+
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
+        devices: "{{ '/dev/dri:/dev/dri' if dev_dri.stat.exists == True | default(false) else omit }}"
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        purge_networks: yes
+        restart_policy: unless-stopped
+        networks:
+          - name: mhs
+            aliases:
+              - '{{pgrole}}'
+        expose:
+          - '8096'
+          - '8920'
+        state: started
+        labels: '{{pg_labels}}'
+
+    # FIRST TIME CONFIGURATION ###########################################################
+    - name: 'Configuring {{pgrole}} for first time use'
+      block:
+        - name: 'Pending XML Generation'
+          wait_for:
+            path: '/opt/mhs/apps-data/{{pgrole}}/config/system.xml'
+            state: present
+
+        - name: 'Wait 5 Seconds'
+          wait_for:
+            timeout: 5
+
+        - name: 'Stop {{pgrole}}'
+          docker_container:
+            name: '{{pgrole}}'
+            state: stopped
+
+        - name: 'Turn Off Reporting'
+          xml:
+            path: '/opt/mhs/apps-data/{{pgrole}}/config/system.xml'
+            xpath: /ServerConfiguration/EnableAnonymousUsageReporting
+            value: 'false'
+
+        - name: 'Restart {{pgrole}}'
+          docker_container:
+            name: '{{pgrole}}'
+            state: started
+      when: not xmlcheck.stat.exists

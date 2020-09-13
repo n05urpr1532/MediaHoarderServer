@@ -1,0 +1,75 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'rsync-backup'
+        image: 'mrdoob/rsyncbackup'
+
+    - name: 'Register TimeZone'
+      shell: 'cat /etc/timezone'
+      register: tz
+
+    - name: 'Register Server ID'
+      shell: 'cat /var/mhs/state/server.id'
+      register: serverid
+
+    - name: 'Setting {{pgrole}} Volumes'
+      set_fact:
+        amg_volumes:
+          - '/opt/mhs/apps-data/:/home'
+          - '/var/mhs/backups:/backup'
+          - '/opt/mhs/apps-data/{{pgrole}}/rclone:/rclone'
+          - '/opt/mhs/apps-data/{{pgrole}}/log:/log'
+
+    - name: 'Setting {{pgrole}} ENV'
+      set_fact:
+        amg_env:
+          CRON_TIME: '0 1 * * *'
+          CONTAINER_TIMEZONE: '{{tz.stdout}}'
+          BACKUP_HOLD: '15'
+          SERVER_ID: '{{serverid.stdout}}'
+
+
+    ## VALUES for upload backups
+
+    - name: 'Create {{pgrole}} dir folder'
+      file:
+        path: '/opt/mhs/apps-data/{{pgrole}}/rclone'
+        state: directory
+        mode: '0755'
+
+    - name: 'Check of Existance files in {{ pgrole }}'
+      stat:
+        path: '/opt/mhs/apps-data/{{pgrole}}/rclone/rclone.conf'
+      register: rcp
+
+    - name: 'Remove old rclone.conf from {{ pgrole }} folder'
+      shell: 'rm -rf /opt/mhs/apps-data/{{pgrole}}/rclone/rclone.conf'
+      ignore_errors: yes
+      when: rcp.stat.exists == true
+
+    - name: 'Clone rclone.config to {{ pgrole }} folder'
+      shell: 'cp -r /opt/mhs/etc/rclone/rclone.conf /opt/mhs/apps-data/{{pgrole}}/rclone/rclone.conf'
+      ignore_errors: yes
+
+    # MAIN DEPLOYMENT
+    # #############################################################
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        volumes: '{{amg_volumes}}'
+        env: '{{amg_env}}'
+        restart_policy: unless-stopped
+        capabilities:
+          - 'SYS_TIME'
+          - 'SYS_NICE'
+        networks:
+          - name: mhs
+            aliases:
+              - 'rsync-backup'
+        state: started

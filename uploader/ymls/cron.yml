@@ -1,0 +1,19 @@
+---
+- cron:
+    name: Hourly Clean Clone Clean
+    special_time: 'hourly'
+    job: 'bash /opt/mhs/lib/uploader/bin/templates/cloneclean.sh'
+    state: absent
+  ignore_errors: yes
+
+- cron:
+    name: Hourly downloads cleaner
+    special_time: 'hourly'
+    job: 'bash /opt/mhs/lib/uploader/scripts/cloneclean.sh'
+    state: absent
+
+- cron:
+    name: Daily log cleaner
+    special_time: 'daily'
+    job: 'tlogs'
+    state: present

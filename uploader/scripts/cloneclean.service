@@ -1,0 +1,13 @@
+[Unit]
+Description=cloneclean service
+After=multi-user.target network-online.target
+
+[Service]
+Type=simple
+User=0
+Group=0
+ExecStart=/bin/bash /opt/mhs/lib/uploader/scripts/cloneclean.sh
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

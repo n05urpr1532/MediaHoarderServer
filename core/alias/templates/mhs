@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+source /opt/mhs/lib/core/functions/functions.sh
+source /opt/mhs/lib/core/functions/start.sh
+source /opt/mhs/lib/core/functions/install.sh
+
+sudocheck
+missingpull
+
+# pg deploy contains pgdeploy at end
+clear
+pginstall

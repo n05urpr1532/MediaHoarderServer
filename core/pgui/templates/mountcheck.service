@@ -1,0 +1,16 @@
+[Unit]
+Description=MountCheck Service Daemon
+After=multi-user.target
+
+[Service]
+Type=simple
+User=0
+Group=0
+ExecStart=/bin/bash /opt/mhs/lib/core/pgui/templates/mountcheck.sh
+TimeoutStopSec=20
+KillMode=process
+RemainAfterExit=yes
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

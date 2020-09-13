@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Check if Image Variable Exists
+      stat:
+        path: '/opt/mhs/lib/apps-core'
+      register: pathcheck
+
+    - name: 'Transfer Image Variable'
+      shell: 'rm -rf /opt/mhs/lib/apps-core'
+      when: pathcheck.stat.exists
+
+    - name: Cloning GCE Apps
+      git:
+        repo: 'https://github.com/n05urpr1532-MHA-Team/Apps-GCE'
+        dest: /opt/mhs/lib/apps-core
+        version: 'master'
+        force: yes
+
+    - name: Set Permission and Owner
+      shell: 'chown -R 1000:1000 /opt/mhs/lib/apps-core && chmod -R 775 /opt/mhs/lib/apps-core'

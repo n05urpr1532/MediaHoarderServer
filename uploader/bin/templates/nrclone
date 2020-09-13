@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+nano /opt/mhs/etc/rclone/rclone.conf && systemctl daemon-reload

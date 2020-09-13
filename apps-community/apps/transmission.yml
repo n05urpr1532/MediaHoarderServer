@@ -1,0 +1,176 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'transmission'
+        pgrole2: 'transmissionrss'
+        intport: '9091'
+        extport: '9091'
+        intport2: '8888'
+        extport2: '8888'
+        image: 'haugene/transmission-openvpn'
+        image2: 'haugene/transmission-rss'
+
+    # CORE (MANDATORY) ############################################################
+    - name: 'Including cron job for {{pgrole}}'
+      include_tasks: '/opt/mhs/lib/apps-community/apps/_core.yml'
+
+    - name: 'Including folders for {{pgrole}}'
+      include_tasks: '/opt/mhs/lib/apps-community/apps/_downloaders.yml'
+
+    - name: 'Checking for existing rss folder'
+      stat:
+        path: '/opt/mhs/apps-data/{{pgrole}}/rss'
+      register: rsscheck
+
+    - name: 'Checking for existing rss config'
+      stat:
+        path: '/opt/mhs/apps-data/{{pgrole}}/rss/transmission-rss.conf'
+      register: cfgcheck
+
+    - name: 'Checking for existing appdata for {{pgrole}}'
+      stat:
+        path: /opt/mhs/apps-data/{{pgrole}}/
+      register: datacheck
+
+    # LABELS ######################################################################
+    - name: 'Adding Traefik for {{pgrole}}'
+      set_fact:
+        pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
+          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.frontend.headers.SSLRedirect: 'true'
+          traefik.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.frontend.headers.STSPreload: 'true'
+          traefik.frontend.headers.STSSeconds: '315360000'
+          traefik.frontend.headers.browserXSSFilter: 'true'
+          traefik.frontend.headers.contentTypeNosniff: 'true'
+          traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+          traefik.frontend.headers.forceSTSHeader: 'true'
+
+    - name: 'Setting Volumes for {{pgrole}}'
+      set_fact:
+        pg_volumes:
+          - '/opt/mhs/apps-data/{{pgrole}}/config:/config'
+          - '/opt/mhs/apps-data/{{pgrole}}/data:/data'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/etc/localtime:/etc/localtime:ro'
+
+    - name: 'Setting {{pgrole2}} Volumes'
+      set_fact:
+        pg_volumes2:
+          - '/opt/mhs/apps-data/{{pgrole}}/rss/transmission-rss.conf:/etc/transmission-rss.conf'
+
+    - name: 'Setting ENV for {{pgrole}}'
+      set_fact:
+        pg_env:
+          PUID: '1000'
+          PGID: '1000'
+          CREATE_TUN_DEVICE: 'true'
+          OPENVPN_PROVIDER: 'VPN_PROVIDER'
+          OPENVPN_USERNAME: 'VPN_USER'
+          OPENVPN_PASSWORD: 'VPN_PASS'
+          OPENVPN_CONFIG: 'NAME_OF_CONF (configs at https://git.io/fpCSF)'
+          OPENVPN_OPTS: '--inactive 3600 --ping 10 --ping-exit 60'
+          LOCAL_NETWORK: '192.168.0.0/24'
+          UMASK_SET: '000'
+          TRANSMISSION_BLOCKLIST_ENABLED: 'true'
+          TRANSMISSION_BLOCKLIST_URL: 'http://john.bitsurge.net/public/biglist.p2p.gz'
+          TRANSMISSION_DHT_ENABLED: 'false'
+          TRANSMISSION_HOME: '/config/home'
+          TRANSMISSION_RPC_AUTHENTICATION_REQUIRED: 'false'
+          #          TRANSMISSION_RPC_HOST_WHITELIST: '127.0.0.1'
+          TRANSMISSION_RPC_PORT: '{{intport}}'
+          TRANSMISSION_UMASK: '000'
+          TRANSMISSION_RATIO_LIMIT: '1.01'
+          TRANSMISSION_RATIO_LIMIT_ENABLED: 'true'
+          TRANSMISSION_ALT_SPEED_DOWN: '2000'
+          TRANSMISSION_ALT_SPEED_ENABLED: 'false'
+          TRANSMISSION_ALT_SPEED_UP: '15'
+          TRANSMISSION_SPEED_LIMIT_DOWN: '6000'
+          TRANSMISSION_SPEED_LIMIT_DOWN_ENABLED: 'false'
+          TRANSMISSION_SPEED_LIMIT_UP: '30'
+          TRANSMISSION_SPEED_LIMIT_UP_ENABLED: 'false'
+          TRANSMISSION_INCOMPLETE_DIR: '/mnt/incomplete/{{pgrole}}'
+          TRANSMISSION_INCOMPLETE_DIR_ENABLED: "true"
+          TRANSMISSION_WATCH_DIR: '/mnt/torrent/'
+          TRANSMISSION_WATCH_DIR_ENABLED: 'false'
+          TRANSMISSION_DOWNLOAD_DIR: '/mnt/downloads/{{pgrole}}'
+          TRANSMISSION_WEB_UI: 'combustion'
+          WEBPROXY_ENABLED: 'true'
+          WEBPROXY_PORT: '{{extport2}}'
+
+    - name: 'Setting ENV for {{pgrole2}}'
+      set_fact:
+        pg_env2:
+          TRANSMISSION_DOWNLOAD_DIR: '/mnt/downloads/{{pgrole}}'
+          RSS_URL: 'RSS_FEED_URL'
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'RSS feed configuration - Folder'
+      block:
+        - name: 'Creating RSS folder'
+          shell: 'mkdir /opt/mhs/apps-data/{{pgrole}}/rss'
+      when: not rsscheck.stat.exists
+
+    - name: 'RSS feed configuration - Config'
+      block:
+        - name: 'Creating RSS configuration file'
+          shell: 'touch /opt/mhs/apps-data/{{pgrole}}/rss/transmission-rss.conf && chown -R 1000:1000 /opt/mhs/apps-data/{{pgrole}}/rss/ && echo see https://git.io/fhAm2 to configure > /opt/mhs/apps-data/{{pgrole}}/rss/transmission-rss.conf'
+      when: not cfgcheck.stat.exists
+
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: always
+        devices:
+          - '/dev/net/tun:/dev/net/tun:rwm'
+        capabilities:
+          - NET_ADMIN
+        dns_servers:
+          - 1.1.1.1
+          - 1.0.0.1
+        networks:
+          - name: mhs
+            aliases:
+              - '{{pgrole}}'
+        state: started
+        labels: '{{pg_labels}}'
+
+    - name: 'Waiting 30 seconds for {{pgrole}} to initialize'
+      wait_for:
+        timeout: 30
+
+    - name: 'Deploying {{pgrole2}}'
+      docker_container:
+        name: '{{pgrole2}}'
+        image: '{{image2}}'
+        pull: yes
+        volumes: '{{pg_volumes2}}'
+        env: '{{pg_env2}}'
+        links:
+          - '{{pgrole}}:transmission'
+        networks:
+          - name: mhs
+            aliases:
+              - '{{pgrole2}}'
+        restart_policy: unless-stopped
+        state: started
+
+    - name: 'Stopping {{pgrole}}. Go configure Environment Variables in Portainer.'
+      docker_container:
+        name: '{{pgrole}}'
+        state: stopped

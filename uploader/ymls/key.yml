@@ -1,0 +1,53 @@
+---
+- name: 'Check of Existance files in {{ pgrole }}'
+  stat:
+    path: '/opt/mhs/apps-data/uploader/rclone.conf'
+  register: rcp
+
+- name: 'Remove old rclone.conf from {{ pgrole }} folder'
+  shell: 'rm -rf /opt/mhs/apps-data/uploader/rclone.conf'
+  ignore_errors: yes
+  when: rcp.stat.exists == true
+
+- name: 'Remove old Keys from {{ pgrole }} folder'
+  shell: 'rm -rf /opt/mhs/apps-data/uploader/keys'
+  ignore_errors: yes
+  when: rcp.stat.exists == true
+
+- name: 'Clone rclone.config to {{ pgrole }} folder'
+  shell: 'cp -r /opt/mhs/etc/rclone/rclone.conf /opt/mhs/apps-data/uploader/rclone.conf'
+
+- name: 'Check of Existance file for TDrive and TCrypt'
+  stat:
+    path: '/opt/mhs/apps-data/uploader/keys/GDSA01'
+  register: tdgdsa
+
+- name: 'Clone fresh keys TDrive and TCrypt'
+  shell: 'cp -rv "/opt/mhs/etc/mhs/.blitzkeys" /opt/mhs/apps-data/uploader/keys'
+  ignore_errors: yes
+  when: tdgdsa.stat.exists == false
+
+- name: 'Check of Existance files in {{ pgrole }}'
+  stat:
+    path: '/opt/mhs/apps-data/uploader/opt/mhs/apps-data/uploader/Preferences.xml'
+  register: pcp
+  ignore_errors: yes
+
+- name: 'Remove old Preferences.xml from {{ pgrole }} folder'
+  shell: 'rm -rf /opt/mhs/apps-data/uploader/Preferences.xml'
+  ignore_errors: yes
+  when: pcp.stat.exists == true
+
+- name: 'Copy Plex Preference to the Docker'
+  shell: 'cp -rv "/opt/mhs/apps-data/plex/database/Library/Application Support/Plex Media Server/Preferences.xml" /opt/mhs/apps-data/uploader/Preferences.xml'
+  ignore_errors: yes
+  when: pcp.stat.exists == false
+
+- name: 'Setting permissions on appdata'
+  shell: 'chmod 775 /opt/mhs/apps-data/{{pgrole}}'
+
+- name: 'Setting ownership on appdata recursivley (this can take a while!)'
+  shell: 'chown -R 1000:1000 /opt/mhs/apps-data/{{pgrole}}'
+
+- name: 'Setting permissions on appdata recursivley (this can take a while!)'
+  shell: 'chmod -R 775 /opt/mhs/apps-data/{{pgrole}}'

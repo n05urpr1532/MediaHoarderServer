@@ -93,7 +93,7 @@ upgrade_os_and_install_packages() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Please stand by...
 EOF
-  local package_list="curl wget software-properties-common git zip unzip dialog sudo nano htop mc lshw fortune python3-apt intel-gpu-tools lolcat figlet"
+  local package_list="curl wget software-properties-common git zip unzip dialog sudo nano htop mc lshw fortune python3-apt intel-gpu-tools lolcat figlet tree"
 
   export DEBIAN_FRONTEND=noninteractive
   echo -ne '                         (0%)\r'
@@ -181,7 +181,6 @@ EOF
   if [[ -e "/var/plexguide" ]]; then logger "$(rm -rf /var/plexguide 2>&1)"; fi
   if [[ -e "/opt/ptsupdate" ]]; then logger "$(rm -rf /opt/ptsudate 2>&1)"; fi
   echo -ne '##                         (10%)\r'
-  echo "" > /var/mhs/server.ports
   install_python_pip
   echo -ne '#####                      (20%)\r'
   install_ansible_with_pip
@@ -190,18 +189,22 @@ EOF
   logger "$(ansible-galaxy install --force stefangweichinger.ansible_rclone 2>&1)"
   echo -ne '##########                 (40%)\r'
   logger "$(ansible-playbook /opt/mhs/lib/installer/ansible-tasks/create-folders.yml 2>&1)"
-  logger "$(ansible-playbook /opt/mhs/lib/menu/alias/alias.yml 2>&1)"
-  logger "$(ansible-playbook /opt/mhs/lib/menu/motd/motd.yml 2>&1)"
+  # Reinit ports
+  echo "" > /var/mhs/state/server.ports
+  # Set version
+  cat /opt/mhs/lib/VERSION > /var/mhs/state/pg.number
+  logger "$(ansible-playbook /opt/mhs/lib/core/alias/alias.yml 2>&1)"
+  logger "$(ansible-playbook /opt/mhs/lib/core/motd/motd.yml 2>&1)"
   echo -ne '############               (50%)\r'
-  logger "$(ansible-playbook /opt/mhs/lib/menu/pg.yml --tags journal,system 2>&1)"
+  logger "$(ansible-playbook /opt/mhs/lib/core/mhs.yml --tags journal,system 2>&1)"
   echo -ne '##############             (60%)\r'
-  logger "$(ansible-playbook /opt/mhs/lib/menu/pg.yml --tags docker-install 2>&1)"
+  logger "$(ansible-playbook /opt/mhs/lib/core/mhs.yml --tags docker-install 2>&1)"
   echo -ne '#################          (70%)\r'
-  logger "$(ansible-playbook /opt/mhs/lib/menu/pg.yml --tags rclone-install 2>&1)"
+  logger "$(ansible-playbook /opt/mhs/lib/core/mhs.yml --tags rclone-install 2>&1)"
   echo -ne '####################       (80%)\r'
-  logger "$(ansible-playbook /opt/mhs/lib/menu/pg.yml --tags mergerfs-install 2>&1)"
+  logger "$(ansible-playbook /opt/mhs/lib/core/mhs.yml --tags mergerfs-install 2>&1)"
   echo -ne '######################     (90%)\r'
-  logger "$(ansible-playbook /opt/mhs/lib/menu/pg.yml --tags update 2>&1)"
+  logger "$(ansible-playbook /opt/mhs/lib/core/mhs.yml --tags update 2>&1)"
   echo -ne '#########################  (100%)\r'
   echo -ne '\n'
 

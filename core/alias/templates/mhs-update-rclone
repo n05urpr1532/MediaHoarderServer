@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+source /opt/mhs/lib/core/functions/update.sh
+
+sudocheck
+rcloneupdate
+exitcheck

@@ -40,7 +40,7 @@ EOF
   )"
   logger "$(
     tar --warning=no-file-changed --ignore-failed-read --absolute-names --warning=no-file-removed \
-    -C /var/plexguide -cf /var/mhs/old-pg-backup/plexguide-var-old-"$time".tar.gz ./ 2>&1
+    -C /var/mhs/state -cf /var/mhs/old-pg-backup/plexguide-var-old-"$time".tar.gz ./ 2>&1
   )"
 
   printfiles=$(ls -ah /var/mhs/old-pg-backup/*)

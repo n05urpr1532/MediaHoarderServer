@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Set Permission and Owner
+      shell: 'chown -R 1000:1000 /opt/mhs/lib/apps-community && chmod -R 775 /opt/mhs/lib/apps-community'

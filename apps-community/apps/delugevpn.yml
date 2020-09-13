@@ -1,0 +1,162 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'delugevpn'
+        intport: '8112'
+        extport: '8112'
+        intport2: '8118'
+        extport2: '8118'
+        intport3: '58846'
+        extport3: '58846'
+        intport4: '58946'
+        extport4: '58946'
+        image: 'binhex/arch-delugevpn:1.3.15_18_ge050905b2-1-04'
+
+    # CORE (MANDATORY) ############################################################
+    - name: 'Including cron job for {{pgrole}}'
+      include_tasks: '/opt/mhs/lib/apps-community/apps/_core.yml'
+
+    - name: 'Including folders for {{pgrole}}'
+      include_tasks: '/opt/mhs/lib/apps-community/apps/_downloaders.yml'
+
+    - name: 'Including plugins for {{pgrole}}'
+      include_tasks: '/opt/mhs/lib/apps-community/apps/_plugins.yml'
+
+    - name: 'Checking for existing appdata for {{pgrole}}'
+      stat:
+        path: /opt/mhs/apps-data/{{pgrole}}/core.conf
+      register: confcheck
+
+    # LABELS ######################################################################
+    - name: 'Adding Traefik for {{pgrole}}'
+      set_fact:
+        pg_labels:
+          traefik.frontend.auth.forward.address: '{{gauth}}'
+          traefik.enable: 'true'
+          traefik.port: '{{intport}}'
+          traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
+          traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
+          traefik.frontend.headers.SSLRedirect: 'true'
+          traefik.frontend.headers.STSIncludeSubdomains: 'true'
+          traefik.frontend.headers.STSPreload: 'true'
+          traefik.frontend.headers.STSSeconds: '315360000'
+          traefik.frontend.headers.browserXSSFilter: 'true'
+          traefik.frontend.headers.contentTypeNosniff: 'true'
+          traefik.frontend.headers.customResponseHeaders: 'X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex'
+          traefik.frontend.headers.forceSTSHeader: 'true'
+
+    - name: 'Setting Volumes for {{pgrole}}'
+      set_fact:
+        pg_volumes:
+          - '/opt/mhs/apps-data/{{pgrole}}:/config'
+          - '/opt/mhs/apps-data/{{pgrole}}/data:/data'
+          - '/opt/mhs/apps-data/{{pgrole}}/openvpn:/config/openvpn'
+          - '{{path.stdout}}:{{path.stdout}}'
+          - '/etc/localtime:/etc/localtime:ro'
+
+    - name: 'Setting ENV for {{pgrole}}'
+      set_fact:
+        pg_env:
+          PUID: '1000'
+          PGID: '1000'
+          VPN_ENABLED: 'no'
+          VPN_USER: 'vpnuser'
+          VPN_PASS: 'vpnpass'
+          VPN_PROV: 'pia|airvpn|custom'
+          ENABLE_PRIVOXY: 'no'
+          STRICT_PORT_FORWARD: 'no'
+          LAN_NETWORK: '172.18.0.0/16'
+          UMASK: '000'
+          NAME_SERVERS: '209.222.18.222,84.200.69.80,37.235.1.174,1.1.1.1,209.222.18.218,37.235.1.177,84.200.70.40,1.0.0.1'
+          DELUGE_DAEMON_LOG_LEVEL: 'info'
+          DELUGE_WEB_LOG_LEVEL: 'info'
+          DEBUG: 'false'
+
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+          - '{{ports.stdout}}{{extport2}}:{{intport2}}'
+          - '{{ports.stdout}}{{extport3}}:{{intport3}}'
+          - '{{ports.stdout}}{{extport4}}:{{intport4}}'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: unless-stopped
+        devices:
+          - '/dev/net/tun:/dev/net/tun:rwm'
+        purge_networks: yes
+        capabilities:
+          - NET_ADMIN
+        networks:
+          - name: mhs
+            aliases:
+              - '{{pgrole}}'
+            ipv4_address: 172.18.0.56
+        state: started
+        labels: '{{pg_labels}}'
+
+    # CONFIGURATION ###########################################################
+    - name: 'Waiting for {{pgrole}} to initialize'
+      wait_for:
+        timeout: 10
+
+    - name: Stopping {{pgrole}}
+      docker_container:
+        name: '{{pgrole}}'
+        state: stopped
+
+    - name: 'Checking for appdata'
+      wait_for:
+        path: '/opt/mhs/apps-data/{{pgrole}}/core.conf'
+        state: present
+        delay: 5
+
+    - name: Set enabled_plugins
+      replace:
+        dest: '/opt/mhs/apps-data/{{pgrole}}/core.conf'
+        regexp: '"enabled_plugins".*'
+        replace: '"enabled_plugins": ["Extractor", "Label"],'
+
+    - name: Set move completed location
+      lineinfile:
+        path: '/opt/mhs/apps-data/{{pgrole}}/core.conf'
+        regexp: '"move_completed_path".*'
+        line: '   "move_completed_path": "{{path.stdout}}/downloads/{{pgrole}}",'
+        state: present
+
+    - name: Set download location
+      lineinfile:
+        path: '/opt/mhs/apps-data/{{pgrole}}/core.conf'
+        regexp: '"download_location".*'
+        line: '   "download_location": "{{path.stdout}}/incomplete/{{pgrole}}",'
+        state: present
+
+    - name: Setting torrent file directory
+      lineinfile:
+        path: '/opt/mhs/apps-data/{{pgrole}}/core.conf'
+        regexp: '"torrentfiles_location".*'
+        line: '    "torrentfiles_location": "{{path.stdout}}/torrent",'
+        state: present
+
+    - name: Setting move_completed
+      lineinfile:
+        path: '/opt/mhs/apps-data/{{pgrole}}/core.conf'
+        regexp: '"move_completed".*'
+        line: '    "move_completed": true,'
+        state: present
+
+      when: not confcheck.stat.exists
+
+    - name: Restart {{pgrole}}
+      docker_container:
+        name: '{{pgrole}}'
+        state: started
