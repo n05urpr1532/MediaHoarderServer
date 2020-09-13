@@ -20,13 +20,13 @@ NOTE2: Formatting Examples
 /media-NAS/storage/media
 /secondhd/user/
 
-Quitting? Type >>> q or exit
+Quitting? Type >>> exit
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
   read -rp '↘️  Input Selection | Press [ENTER]: ' addpath < /dev/tty
 
-  if [[ "$addpath" == "exit" || "$addpath" == "Exit" || "$addpath" == "EXIT" || "$addpath" == "z" || "$addpath" == "Z" ]]; then multihdstart; fi
+  if [[ "$addpath" == "exit" || "$addpath" == "Exit" || "$addpath" == "EXIT" ]]; then multihdstart; fi
   if [[ "$addpath" == "" ]]; then addpoint; fi
 
   addpointcheck

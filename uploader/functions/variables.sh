@@ -8,12 +8,10 @@ uploadervars() {
   }
 
   touch /var/mhs/state/uagent
-  uagentrandom="$(cat /var/mhs/state/uagent)"
+  local uagentrandom
+  uagentrandom="$(cat /var/mhs/state/uagent 2> /dev/null)"
   if [[ "$uagentrandom" == "NON-SET" || "$uagentrandom" == "" || "$uagentrandom" == "rclone/v1.*" || "$uagentrandom" == "random" || "$uagentrandom" == "RANDOM" ]]; then
-    randomagent=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
-    uagent=$(cat /var/mhs/state/uagent)
-    echo "$randomagent" > /var/mhs/state/uagent
-    echo $(sed -e 's/^"//' -e 's/"$//' <<< $(cat /var/mhs/state/uagent)) > /var/mhs/state/uagent
+    head -80 /dev/urandom | md5sum | cut -c -16 > /var/mhs/state/uagent
   fi
 
   touch /var/mhs/state/cloneclean.nzb
@@ -183,8 +181,8 @@ uploadervars() {
   else variable /var/mhs/state/timetable.bw "off"; fi
 
   # Upgrade old var format to new var format
-
   echo $(sed -e 's/^"//' -e 's/"$//' <<< $(cat /var/mhs/state/uagent)) > /var/mhs/state/uagent
+
   if [[ $(cat /var/mhs/state/blitz.bw) != *"M"* && $(cat /var/mhs/state/blitz.bw) != 0 ]]; then echo "$(cat /var/mhs/state/blitz.bw)M" > /var/mhs/state/blitz.bw; fi
   if [[ $(cat /var/mhs/state/move.bw) != *"M"* && $(cat /var/mhs/state/move.bw) != 0 ]]; then echo "$(cat /var/mhs/state/move.bw)M" > /var/mhs/state/move.bw; fi
   if [[ $(cat /var/mhs/state/vfs_bs) != *"M" ]]; then echo "$(cat /var/mhs/state/vfs_bs)M" > /var/mhs/state/vfs_bs; fi
