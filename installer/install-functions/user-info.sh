@@ -54,9 +54,8 @@ Terms of Service by having less than 5 users.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  # TODO Re-enable timer
-  #timer 5
-  user_confirm_info
+  timer 5
+  user_acknowledge_info
 }
 
 info_install_end() {

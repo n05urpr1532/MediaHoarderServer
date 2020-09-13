@@ -38,7 +38,7 @@ regioncenter() {
 
 EOF
 
-    read -p 'Type Number | Press [ENTER]: ' typed2 < /dev/tty
+    read -r -p 'Type Number | Press [ENTER]: ' typed2 < /dev/tty
     if [[ "$typed2" == "exit" || "$typed2" == "Exit" || "$typed2" == "EXIT" || "$typed2" == "z" || "$typed2" == "Z" ]]; then projectinterface; fi
   done
 
@@ -54,6 +54,6 @@ EOF
   gcloud compute addresses list | grep pg-gce | awk '{print $2}' > /var/mhs/state/project.ipaddress
 
   echo
-  read -p '↘️  IP Address & Region Set | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  IP Address & Region Set | Press [ENTER] ' typed < /dev/tty
 
 }

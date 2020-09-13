@@ -29,7 +29,7 @@ sonarrcheck() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+    read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
     question1
   fi
 }
@@ -45,7 +45,7 @@ radarrcheck() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+    read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
     question1
   fi
 }
@@ -74,7 +74,7 @@ HD - 720p/1080p
 Go Back? Type > exit
 
 EOF
-  read -p '↘️ Type Sonarr Location | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type Sonarr Location | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
     question1
@@ -91,7 +91,7 @@ Quality Set Is: $typed
 EOF
 
     echo "$typed" > /var/mhs/state/traktarr/pgtrak.sprofile
-    read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     question1
   fi
 }
@@ -120,7 +120,7 @@ HD - 720p/1080p
 Go Back? Type > exit
 
 EOF
-  read -p '↘️ Type Radarr Location | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type Radarr Location | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
     question1
@@ -136,7 +136,7 @@ Quality Set Is: $typed
 EOF
 
     echo "$typed" > /var/mhs/state/traktarr/pgtrak.rprofile
-    read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     question1
   fi
 }
@@ -163,9 +163,9 @@ Go Back? Type > exit
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️ Type API Client | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type API Client | Press [ENTER]: ' typed < /dev/tty
   echo $typed > /var/mhs/state/traktarr/pgtrak.client
-  read -p '↘️ Type API Secret | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type API Secret | Press [ENTER]: ' typed < /dev/tty
   echo $typed > /var/mhs/state/traktarr/pgtrak.secret
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
@@ -184,7 +184,7 @@ INFO: Messed up? Rerun this API Interface to update the information!
 
 EOF
 
-    read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     question1
   fi
 }
@@ -210,7 +210,7 @@ $tvfolderprint
 Go Back? Type > exit
 
 EOF
-  read -p '↘️ Type Sonarr Location | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type Sonarr Location | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
     question1
@@ -266,7 +266,7 @@ EOF
       #fi
 
       echo "$typed" > /var/mhs/state/traktarr/pgtrak.spath
-      read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+      read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
       echo ""
       question1
     else
@@ -282,7 +282,7 @@ Advice: Exit MHS and (Test) Type >>> mkdir $typed/testfolder
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-      read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+      read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
       echo "" && question1
     fi
   fi
@@ -312,7 +312,7 @@ $moviefolderprint
 Go Back? Type > exit
 
 EOF
-  read -p '↘️ Type Radarr Location | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type Radarr Location | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
     question1
@@ -361,7 +361,7 @@ EOF
 
 EOF
       echo "$typed" > /var/mhs/state/traktarr/pgtrak.rpath
-      read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+      read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
       echo ""
       question1
     else
@@ -378,7 +378,7 @@ Advice: Exit MHS and (Test) Type >>> mkdir $typed/testfolder
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-      read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+      read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
       echo "" && question1
     fi
   fi
@@ -401,7 +401,7 @@ Set a Year between [ $mnyear ] and [ $mxyear ]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
   if [[ "$typed" -ge "$mnyear" && "$typed" -le "$mxyear" ]]; then
     echo "$typed" > /var/mhs/state/traktarr/pgtrakyear.max && question1
   else maxyear; fi
@@ -421,7 +421,7 @@ Set a Year between [ $mnyear ] and [ $mxyear ]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
   if [[ "$typed" -ge "$mnyear" && "$typed" -le "$mxyear" ]]; then
     echo "$typed" > /var/mhs/state/traktarr/pgtrakyear.min && question1
   else minyear; fi
@@ -450,7 +450,7 @@ Spain
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type your language profile from Sonarr | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type your language profile from Sonarr | Press [ENTER]: ' typed < /dev/tty
   echo $typed > /var/mhs/state/traktarr/pgtrak.lang
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
     echo -e "English" /var/mhs/state/traktarr/pgtrak.lang
@@ -468,7 +468,7 @@ EOF
  If this is wrong now, traktarr will not work 100%
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-    read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     question1
   fi
 }
@@ -495,7 +495,7 @@ Choices are announced, in_cinemas, released (Physical/Web), or predb.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) echo -e "announced" > /var/mhs/state/traktarr/pgtrak.minimumavailability && question1 ;;
@@ -536,7 +536,7 @@ $chk
 EOF
 
   echo
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   question1
 }
 
@@ -561,7 +561,7 @@ prefill() {
 EOF
 
   echo
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) ansible-playbook /opt/mhs/lib/core/traktarr/traktarr-list/prefillallow.yml && question1 ;;
@@ -574,7 +574,7 @@ EOF
 # BAD INPUT
 badinput() {
   echo
-  read -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
   question1
 }
 
@@ -611,7 +611,7 @@ Args:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
   echo
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   question1
 }
 #####################################################################################################################################
@@ -626,7 +626,7 @@ checkcase() {
 		━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 		EOF
-    read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+    read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
     exit 0
   elif [[ "$sonarr" == "sonarr" ]] && [[ "$radarr" == "" ]]; then
     echo "⛔  WARNING! - Traktarr will only work for shows! Radarr Not Running!" > /var/mhs/state/traktarr/docker.status
@@ -687,7 +687,7 @@ NOTE: Changes Made? Must Redeploy Traktarr when Complete!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) api && question1 ;;
@@ -708,7 +708,7 @@ EOF
 ⛔️  WARNING! - Sonarr or Radarr must be Running!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-        read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+        read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
         question1
       else
         if [ "$sonarr" = "sonarr" ] && [ "$radarr" = "" ]; then
@@ -717,7 +717,7 @@ EOF
 ⛔️  WARNING! - Traktarr will only work for shows! Radarr Not Running!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-          read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+          read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
         fi
 
         if [ "$radarr" = "radarr" ] && [ "$sonarr" = "" ]; then
@@ -726,7 +726,7 @@ EOF
 ⛔️  WARNING! - Traktarr will only work for movies! Sonarr Not Running!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-          read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+          read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
         fi
 
         if [ "$radarr" = "radarr" ] && [ "$sonarr" = "sonarr" ]; then
@@ -735,7 +735,7 @@ EOF
 🚀 Traktarr - Radarr and Sonarr detected | it will work for both
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-          read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+          read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
         fi
 
         file="/opt/mhs/apps-data/radarr/config.xml"

@@ -15,7 +15,7 @@ variable() {
 
 doneenter() {
   echo
-  read -p 'All done | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'All done | PRESS [ENTER] ' typed < /dev/tty
   question1
 }
 
@@ -34,7 +34,7 @@ plexcheck() {
 ⛔️  WARNING! - Plex is Not Installed or Running! Exiting!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 '
-    read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+    read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
     exit 0
   fi
 }
@@ -60,7 +60,7 @@ ctoken() {
 # BAD INPUT
 badinput() {
   echo
-  read -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
   question1
 }
 
@@ -76,7 +76,7 @@ selection1() {
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) echo -e "false" > /var/mhs/state/plexpatrol/video.transcodes && question1 ;;
@@ -96,7 +96,7 @@ selection2() {
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) echo -e "false" > /var/mhs/state/plexpatrol/video.transcodes4k && question1 ;;
@@ -116,7 +116,7 @@ selection3() {
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) echo -e "false" > /var/mhs/state/plexpatrol/audio.transcodes && question1 ;;
@@ -135,7 +135,7 @@ Set a Number from [ 1 ] - [ 10 ]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
   if [[ "$typed" -ge "1" && "$typed" -le "10" ]]; then
     echo -e "$typed" > /var/mhs/state/plexpatrol/multiple.ips && question1
   else badinput; fi
@@ -151,7 +151,7 @@ Set a Number from [ 5 ] - [ 120 ] Mintues
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
   if [[ "$typed" -ge "5" && "$typed" -le "120" ]]; then
     echo -e "$typed" > /var/mhs/state/plexpatrol/kick.minutes && question1
   else badinput; fi
@@ -167,7 +167,7 @@ Set a Number from [ 60 ] - [ 240 ] seconds
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
   if [[ "$typed" -ge "59" && "$typed" -le "241" ]]; then
     echo -e "$typed" > /var/mhs/state/plexpatrol/check.interval && question1
   else badinput; fi
@@ -185,7 +185,7 @@ selection7() {
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) question1 ;;
@@ -220,7 +220,7 @@ $chk
 EOF
 
   echo
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   clear && question1
 }
 # FIRST QUESTION
@@ -261,7 +261,7 @@ Plex Token                               [ $pstatus ]
 
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) selection1 && clear && question1 ;;

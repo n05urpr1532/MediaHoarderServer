@@ -48,7 +48,7 @@ $running
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-read -p '🌍 Type APP for QUEUE | Press [[ENTER]: ' typed < /dev/tty
+read -r -p '🌍 Type APP for QUEUE | Press [[ENTER]: ' typed < /dev/tty
 
 if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then exit; fi
 

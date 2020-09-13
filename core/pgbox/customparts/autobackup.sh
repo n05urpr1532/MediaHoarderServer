@@ -5,7 +5,7 @@ source /opt/mhs/lib/core/functions/functions.sh
 
 queued() {
   echo
-  read -p "⛔️ ERROR - $typed Already Queued! | Press [ENTER] " typed < /dev/tty
+  read -r -p "⛔️ ERROR - $typed Already Queued! | Press [ENTER] " typed < /dev/tty
   appselect
 }
 
@@ -13,7 +13,7 @@ badinput() {
   echo ""
   echo "⛔️ ERROR - Bad Input! $typed not exist"
   echo ""
-  read -p 'PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'PRESS [ENTER] ' typed < /dev/tty
 }
 
 startup() {
@@ -89,7 +89,7 @@ $buildup
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↪️ Type App Name to Queue Auto Updating | Type ALL to select all | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↪️ Type App Name to Queue Auto Updating | Type ALL to select all | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "deploy" || "$typed" == "Deploy" || "$typed" == "DEPLOY" || "$typed" == "install" || "$typed" == "Install" || "$typed" == "INSTALL" || "$typed" == "a" || "$typed" == "A" ]]; then question2; fi
 
@@ -131,7 +131,7 @@ queueapp() {
 }
 
 complete() {
-  read -p '✅ Process Complete! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '✅ Process Complete! | PRESS [ENTER] ' typed < /dev/tty
   echo
   exit
 }

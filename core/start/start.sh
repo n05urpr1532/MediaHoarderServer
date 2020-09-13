@@ -206,7 +206,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
   # Standby
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) clear && bash /opt/mhs/lib/traefik/traefik.sh && clear && primestart ;;
@@ -287,7 +287,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
   # Standby
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) clear && bash /opt/mhs/lib/traefik/traefik.sh && clear && primestart ;;

@@ -15,7 +15,7 @@ serverid() {
 ↘️   Establishing New Server ID    💬  Use One Word & Keep it Simple
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-    read -p '🌏  TYPE Server ID | Press [ENTER]: ' typed < /dev/tty
+    read -r -p '🌏  TYPE Server ID | Press [ENTER]: ' typed < /dev/tty
 
     if [[ "$typed" == "" ]]; then
       tee <<- EOF

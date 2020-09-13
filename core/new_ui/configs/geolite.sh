@@ -27,7 +27,7 @@ MaxMind:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️ Type License Key of MaxMind | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type License Key of MaxMind | Press [ENTER]: ' typed < /dev/tty
   echo $typed > /var/mhs/state/varken/geoip.key
 }
 api

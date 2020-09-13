@@ -9,7 +9,7 @@ mkdir -p /opt/mhs/etc/mhs/cron
 # BAD INPUT
 badinput() {
   echo
-  read -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
 
 }
 
@@ -34,7 +34,7 @@ Ports Are Currently: [$guard]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1)

@@ -22,7 +22,7 @@ into the browser, it will just work!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Token | PRESS [ENTER]: ' token < /dev/tty
+  read -r -p '↘️  Token | PRESS [ENTER]: ' token < /dev/tty
   if [[ "$token" == "exit" || "$token" == "Exit" || "$token" == "EXIT" || "$token" == "z" || "$token" == "Z" ]]; then clonestart; fi
   curl --request POST --data "code=$token&client_id=$uploaderpublic&client_secret=$uploadersecret&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code" https://accounts.google.com/o/oauth2/token > /opt/mhs/etc/mhs/uploader.info
 
@@ -89,7 +89,7 @@ If not, nothing will work!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
   clonestart
 
 }
@@ -118,7 +118,7 @@ into the browser, it will just work!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Token | PRESS [ENTER]: ' token < /dev/tty
+  read -r -p '↘️  Token | PRESS [ENTER]: ' token < /dev/tty
 
   if [[ "$token" == "exit" || "$token" == "Exit" || "$token" == "EXIT" || "$token" == "z" || "$token" == "Z" ]]; then clonestart; fi
   curl --request POST --data "code=${token}&client_id=${uploaderpublic}&client_secret=${uploadersecret}&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code" https://accounts.google.com/o/oauth2/token > /var/mhs/state/token.part1
@@ -160,12 +160,12 @@ signing in (and/or conducting a proper copy and paste of the token)!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowlege Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowlege Info | Press [ENTER] ' typed < /dev/tty
     clonestart
   fi
 
   echo ""
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
   if [[ "$typed" -ge "1" && "$typed" -le "$A" ]]; then
     a=b
   else teamdriveselect; fi
@@ -188,7 +188,7 @@ drive can be shutdown!)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Acknowledge Info | PRESS [ENTER] ' temp < /dev/tty
+  read -r -p '↘️  Acknowledge Info | PRESS [ENTER] ' temp < /dev/tty
 }
 
 mountchecker() {
@@ -219,7 +219,7 @@ We will continue to block this process until completed!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
   clonestart
 }
 
@@ -241,7 +241,7 @@ the Team Drive! Please complete this first!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     clonestart
   fi
 }

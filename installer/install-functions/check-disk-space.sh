@@ -24,6 +24,6 @@ Moving forward, you're carrying out this installation at your own risk.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    user_confirm_info
+    user_acknowledge_info
   fi
 }

@@ -17,7 +17,7 @@ if [ "$menu" == "2" ]; then
   read -n 1 -s -r -p "Press [ANY KEY] to Continue"
   echo ""
   echo ""
-  read -p "Set or Change the Server ID (y/n)? " -n 1 -r
+  read -r -p "Set or Change the Server ID (y/n)? " -n 1 -r
   echo # move cursor to a new line
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     echo ""
@@ -33,14 +33,14 @@ if [ "$menu" == "2" ]; then
   break=no
   while [ "$break" == "no" ]; do
     echo ""
-    read -p 'Type a Sever ID & Then Press [ENTER]: ' typed
+    read -r -p 'Type a Sever ID & Then Press [ENTER]: ' typed
     #typed=typed+0
     echo ""
     echo "-------------------------------------------------"
     echo "SYSTEM MESSAGE: Server ID - $typed"
     echo "-------------------------------------------------"
     echo ""
-    read -p "Continue with the Set Server ID (y/n)? " -n 1 -r
+    read -r -p "Continue with the Set Server ID (y/n)? " -n 1 -r
 
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
       echo ""

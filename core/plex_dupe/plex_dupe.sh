@@ -72,13 +72,17 @@ tokencreate() {
 # BAD INPUT
 badinput() {
   echo
-  read -p '⛔️  ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️  ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
   question1
 }
-
+dontwork() {
+  echo
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
+  clear && exit 0
+}
 works() {
   echo
-  read -p ' Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   question1
 }
 
@@ -109,13 +113,13 @@ $chk
 EOF
 
   echo
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   question1
 }
 
 doneenter() {
   echo
-  read -p 'All done | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'All done | PRESS [ENTER] ' typed < /dev/tty
   question1
 }
 
@@ -139,7 +143,7 @@ NOTE / Info
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1)
@@ -176,7 +180,7 @@ remove() {
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) clear && question1 ;;
@@ -216,7 +220,7 @@ NOTE : Plex Dupefinder are located  in /opt/mhs/plex_dupefinder
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) tokencreate && clear && question1 ;;

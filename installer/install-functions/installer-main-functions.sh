@@ -238,7 +238,7 @@ Please check log and retry.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    user_confirm_info
+    user_acknowledge_info
     exit 1
   fi
 }

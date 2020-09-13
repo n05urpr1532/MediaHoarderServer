@@ -20,7 +20,7 @@ $hdpath/dvrfolder
 Go Back? Type > exit
 
 EOF
-  read -p '↘️ Type channelsdvr local Location | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type channelsdvr local Location | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
     exit 0
@@ -76,7 +76,7 @@ EOF
       #fi
 
       echo "$typed" > /var/mhs/state/channelsdvr.folder
-      read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+      read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     else
       tee <<- EOF
 
@@ -87,7 +87,7 @@ Note: You must ensure that linux is able to READ your location.
       It's start again for you
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-      read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+      read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
       channelsdvr
     fi
   fi

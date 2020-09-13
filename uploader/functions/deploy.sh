@@ -93,7 +93,7 @@ dduploader() {
      http://${ip}:7777
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
   clonestart
 }
 ddredeploy() {
@@ -119,7 +119,7 @@ ddredeploy() {
      http://${ip}:7777
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
   clonestart
 }
 ### Docker Uploader Deploy end ##
@@ -196,7 +196,7 @@ $emessage
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
     clonestart
   fi
 }
@@ -259,7 +259,7 @@ EOF
 }
 doneokay() {
   echo
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
 }
 gdrivemod() {
   initial=$(rclone lsd --config /opt/mhs/etc/rclone/rclone.conf gdrive: | grep -oP mhs | head -n1)
@@ -357,7 +357,7 @@ of service accounts
 
 EOF
 
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     clonestart
   fi
 }
@@ -447,7 +447,7 @@ Please reboot and redepoy Uploader to fix.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
 
   exit
 }

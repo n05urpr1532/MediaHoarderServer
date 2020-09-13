@@ -14,7 +14,7 @@ projectname() {
   if [[ "$uploaderemail" == "NOT-SET" ]]; then
     echo
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    read -p '↘️  ERROR! E-Mail is not setup! | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  ERROR! E-Mail is not setup! | Press [ENTER] ' typed < /dev/tty
     clonestart
   fi
 
@@ -41,7 +41,7 @@ CURRENT PROJECT: $uploaderproject
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Input Value | Press [Enter]: ' typed < /dev/tty
+  read -r -p '↘️  Input Value | Press [Enter]: ' typed < /dev/tty
 
   case $typed in
     1)
@@ -88,7 +88,7 @@ Qutting? Type >>> z or exit
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Use Which Existing Project? | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Use Which Existing Project? | Press [ENTER]: ' typed < /dev/tty
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then clonestart; fi
 
   # Repeats if Users Fails the Range
@@ -108,7 +108,7 @@ EOF
     gcloud services enable drive.googleapis.com --project ${existingnumber} --account=${uploaderemail}
   else exisitingproject; fi
   echo
-  read -p '↘️  Existing Project Set | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  Existing Project Set | Press [ENTER] ' typed < /dev/tty
   echo "${existingnumber}" > /var/mhs/state/uploader.project
   clonestart
 }
@@ -128,7 +128,7 @@ Qutting? Type >>> z or exit
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Destroy Which Project? | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Destroy Which Project? | Press [ENTER]: ' typed < /dev/tty
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then optionsmenu; fi
 
   # Repeats if Users Fails the Range
@@ -138,7 +138,7 @@ EOF
     # Cannot Destroy Active Project
     if [[ $(cat /var/mhs/state/uploader.project) == "$destroynumber" ]]; then
       echo
-      read -p '↘️  Unable to Destroy an Active Project | Press [ENTER] ' typed < /dev/tty
+      read -r -p '↘️  Unable to Destroy an Active Project | Press [ENTER] ' typed < /dev/tty
       destroyproject
     fi
 
@@ -146,7 +146,7 @@ EOF
     gcloud projects delete ${destroynumber} --account=${uploaderemail}
   else destroyproject; fi
   echo
-  read -p '↘️  Project Deleted | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  Project Deleted | Press [ENTER] ' typed < /dev/tty
   optionsmenu
 }
 
@@ -184,7 +184,7 @@ keys, and deploy the proper GDSA Accounts for the Team Drive
 
 EOF
 
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     clonestart
   fi
 
@@ -216,7 +216,7 @@ Do You Want to Proceed?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Input Choice | Press [Enter]: ' typed < /dev/tty
+  read -r -p '↘️  Input Choice | Press [Enter]: ' typed < /dev/tty
   case $typed in
     1)
       clonestart
@@ -241,7 +241,7 @@ no spaces!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Input Name | Press [Enter]: ' typed < /dev/tty
+  read -r -p '↘️  Input Name | Press [Enter]: ' typed < /dev/tty
   if [[ "$typed" == "" ]]; then projectnameset; else buildproject; fi
 }
 
@@ -311,6 +311,6 @@ meta-data due to the mounts being offline!
 
 EOF
 
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
   clonestart
 }

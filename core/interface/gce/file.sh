@@ -114,7 +114,7 @@ if [ "$menu" == "4" ]; then
   echo "NOTE: If no project is listed, please visit https://project.pgblitz.com and"
   echo "      review the wiki on how to build a project! Without one, this will fail!"
   echo ""
-  read -p "Set or Change the Project ID (y/n)? " -n 1 -r
+  read -r -p "Set or Change the Project ID (y/n)? " -n 1 -r
   echo # move cursor to a new line
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     echo ""
@@ -139,7 +139,7 @@ if [ "$menu" == "4" ]; then
     cat /var/mhs/state/projects.list | cut -d' ' -f1 | tail -n +2 > /var/mhs/state/project.cut
     echo ""
     echo "NOTE: Type the Name of the Project you want to utilize!"
-    read -p 'Type the Name of the Project to Utlize & Press [ENTER]: ' typed
+    read -r -p 'Type the Name of the Project to Utlize & Press [ENTER]: ' typed
     list=$(cat /var/mhs/state/project.cut | grep $typed)
     echo ""
 
@@ -250,7 +250,7 @@ if [ "$menu" == "5" ]; then
   echo ""
   echo "NOTE: Processor Count: [$pcount]"
   echo ""
-  read -p "Set or Change the Processor Count (y/n)? " -n 1 -r
+  read -r -p "Set or Change the Processor Count (y/n)? " -n 1 -r
   echo # move cursor to a new line
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     echo ""
@@ -280,7 +280,7 @@ if [ "$menu" == "5" ]; then
     echo ""
     echo "NOTE: More Processors = Faster Credit Drain"
     echo ""
-    read -p 'Type a Number 2, 4 or 6 | PRESS [ENTER]: ' typed
+    read -r -p 'Type a Number 2, 4 or 6 | PRESS [ENTER]: ' typed
     tcheck=$(echo $prange | grep $typed)
     echo ""
 
@@ -391,7 +391,7 @@ if [ "$menu" == "6" ]; then
     echo "--------------------------------------------------------"
     cat /tmp/regions.print
     echo "" && echo ""
-    read -p 'Type the Name of an IP Region | PRESS [ENTER]: ' typed
+    read -r -p 'Type the Name of an IP Region | PRESS [ENTER]: ' typed
     echo ""
     tcheck=$(echo $prange | grep $typed)
 
@@ -513,7 +513,7 @@ if [ "$menu" == "6" ]; then
     cat /tmp/zones.print
     echo ""
     echo ""
-    read -p 'Type a Server Zone Name | PRESS [ENTER]: ' typed
+    read -r -p 'Type a Server Zone Name | PRESS [ENTER]: ' typed
     echo ""
     tcheck=$(echo $prange | grep $typed)
     echo ""

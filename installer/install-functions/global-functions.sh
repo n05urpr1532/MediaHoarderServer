@@ -11,8 +11,8 @@ timer() {
   done
 }
 
-user_confirm_info() {
+user_acknowledge_info() {
   echo
-  read -r -p 'Confirm Info | PRESS [ENTER] ' < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   echo
 }

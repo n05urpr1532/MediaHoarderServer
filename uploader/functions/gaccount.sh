@@ -3,7 +3,7 @@
 # BAD INPUT
 badinput() {
   echo
-  read -p '⛔️ ERROR - Bad Input! | Press [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - Bad Input! | Press [ENTER] ' typed < /dev/tty
 }
 variable /var/mhs/state/project.email "NOT-SET"
 emailaccount=$(cat /var/mhs/state/project.email)
@@ -30,7 +30,7 @@ with from your Google GSuite? Ensure that it exists!
 
 EOF
 
-  read -p '↘️  Input E-Mail | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Input E-Mail | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "" ]]; then glogin; fi
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then clonestart; fi
@@ -43,7 +43,7 @@ EOF
   if [[ "$testcheck" == "" ]]; then
     echo
     echo "INFO CHECK: E-Mail Address Failed!"
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     glogin
   fi
 

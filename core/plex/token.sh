@@ -5,13 +5,13 @@
 # BAD INPUT
 badinput() {
   echo
-  read -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
   question1
 }
 
 badinput2() {
   echo
-  read -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
   question2
 }
 
@@ -46,12 +46,12 @@ Token Status				: [$pstatus]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p 'Make a Selection | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Make a Selection | Press [ENTER]: ' typed < /dev/tty
   echo
 
   if [ "$typed" == "1" ]; then
-    read -p 'Enter the PLEX User Name      | Press [ENTER]: ' user < /dev/tty
-    read -p 'Enter the PLEX User Password  | Press [ENTER]: ' pw < /dev/tty
+    read -r -p 'Enter the PLEX User Name      | Press [ENTER]: ' user < /dev/tty
+    read -r -p 'Enter the PLEX User Password  | Press [ENTER]: ' pw < /dev/tty
 
     tee <<- EOF
 
@@ -100,7 +100,7 @@ User Pass: $pw
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p 'Make a Selection | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Make a Selection | Press [ENTER]: ' typed < /dev/tty
 
   if [ "$typed" == "1" ]; then
     tee <<- EOF
@@ -144,7 +144,7 @@ EOF
 NOTE: Process will repeat until you succeed or exit!
 
 EOF
-    read -p 'Confirm Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
     question1
   fi
 }
@@ -173,7 +173,7 @@ EOF
 NOTE: Process will repeat until you succeed or exit!
 
 EOF
-    read -p 'Confirm Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
     question1
   fi
 }

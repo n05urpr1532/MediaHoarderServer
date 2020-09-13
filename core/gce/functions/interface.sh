@@ -21,7 +21,7 @@ Exiting!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Error | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Error | Press [ENTER] ' typed < /dev/tty
 
     projectinterface
   fi
@@ -30,7 +30,7 @@ EOF
 
 badinput() {
   echo
-  read -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
   projectinterface
 }
 
@@ -70,7 +70,7 @@ Ensure that everything is set before deploying the GCE Server!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge | Press [ENTER] ' typed < /dev/tty
 
     gcestart
   fi
@@ -92,7 +92,7 @@ https://cloud.google.com/products/calculator/
 EOF
 
   echo
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   clear
 
   gcestart
@@ -117,7 +117,7 @@ NOTE : if you use 4 Nvmes you will get a swraid5
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p 'Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Type Number | Press [ENTER]: ' typed < /dev/tty
   ## NVME counter to add dont edit this lines below
 
   nvmedeploy="/var/mhs/state/deploy.nvme"
@@ -156,7 +156,7 @@ INSTRUCTIONS: Set the RAM Count ~ 8 - 64 GB
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p 'Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Type Number | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" -lt "8" || "$typed" -gt "64" ]]; then ramcount; fi
 
@@ -180,7 +180,7 @@ https://cloud.google.com/compute/docs/images
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p 'Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Type Number | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "1" ]]; then
     echo -e "ubuntu-os-cloud" > /var/mhs/state/project.imagecount
@@ -210,7 +210,7 @@ INSTRUCTIONS: Set the Processor Count ~ 4 - 16 vCores
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p 'Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Type Number | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" -lt "4" || "$typed" -gt "16" ]]; then processorcount; fi
 
@@ -236,7 +236,7 @@ Project ID: [ $projectid ]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p 'Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1)
@@ -282,7 +282,7 @@ EOF
       typed2=999999999
       while [[ "$typed2" -lt "1" || "$typed2" -gt "$pnum" ]]; do
         infolist
-        read -p 'Type Number | Press [ENTER]: ' typed2 < /dev/tty
+        read -r -p 'Type Number | Press [ENTER]: ' typed2 < /dev/tty
         if [[ "$typed2" == "exit" || "$typed2" == "Exit" || "$typed2" == "EXIT" || "$typed2" == "z" || "$typed2" == "Z" ]]; then projectinterface; fi
       done
 
@@ -330,7 +330,7 @@ EOF
 EOF
       echo $typed > /var/mhs/state/uploader.project
       echo
-      read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+      read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
       variablepull
       projectinterface
       ;;
@@ -354,7 +354,7 @@ Failing to do so will result in naming issues.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-      read -p 'Type Project Name | Press [ENTER]: ' projectname < /dev/tty
+      read -r -p 'Type Project Name | Press [ENTER]: ' projectname < /dev/tty
       echo ""
 
       # loops user back to exit if typed
@@ -381,7 +381,7 @@ Ensure afterwards to ESTABLISH the project as your default to utilize!
 
 EOF
 
-      read -p 'Acknowledge Info | Press [ENTER]' typed < /dev/tty
+      read -r -p 'Acknowledge Info | Press [ENTER]' typed < /dev/tty
 
       projectinterface
       ;;
@@ -433,7 +433,7 @@ EOF
       typed2=999999999
       while [[ "$typed2" -lt "1" || "$typed2" -gt "$pnum" ]]; do
         existlist
-        read -p 'Type Number | Press [ENTER]: ' typed2 < /dev/tty
+        read -r -p 'Type Number | Press [ENTER]: ' typed2 < /dev/tty
         if [[ "$typed2" == "exit" || "$typed2" == "Exit" || "$typed2" == "EXIT" || "$typed2" == "z" || "$typed2" == "Z" ]]; then projectinterface; fi
       done
 
@@ -449,7 +449,7 @@ EOF
 EOF
       echo $typed > /var/mhs/state/uploader.project
       echo
-      read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+      read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
       variablepull
       projectinterface
       ;;
@@ -479,7 +479,7 @@ that exists!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
 
   ### go back to main project interface
   projectinterface
@@ -501,7 +501,7 @@ Exiting!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Error | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Error | Press [ENTER] ' typed < /dev/tty
     gcestart
   fi
 

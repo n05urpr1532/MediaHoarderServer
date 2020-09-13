@@ -13,7 +13,7 @@ prior server names, visit https://drive.google.com - From here, goto
 EOF
 
 # Standby
-read -p 'TYPE the Restore ID Name & Press [ENTER]: ' typed < /dev/tty
+read -r -p 'TYPE the Restore ID Name & Press [ENTER]: ' typed < /dev/tty
 
 tee <<- EOF
 

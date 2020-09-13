@@ -37,9 +37,9 @@ Go Back? Type > exit
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️ Type Username | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type Username | Press [ENTER]: ' typed < /dev/tty
   echo $typed > /var/mhs/state/rcwebui/rcuser.user
-  read -p '↘️ Type Password | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type Password | Press [ENTER]: ' typed < /dev/tty
   echo $typed > /var/mhs/state/rcwebui/rcpass.pass
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
     exit 0
@@ -55,7 +55,7 @@ Password  : $(cat /var/mhs/state/rcwebui/rcpass.pass)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-    read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
   fi
 }
 

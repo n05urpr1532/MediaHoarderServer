@@ -3,7 +3,7 @@
 # BAD INPUT
 badinput() {
   echo
-  read -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
   question1
 }
 
@@ -32,7 +32,7 @@ EOF
     count=$((count + 1))
   done < /opt/mhs/lib/apps-community/apps/image/$image
   echo ""
-  read -p '🚀  Type Number | PRESS [ENTER]: ' typed < /dev/tty
+  read -r -p '🚀  Type Number | PRESS [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" -ge "1" && "$typed" -lt "$count" ]]; then
     mkdir -p /var/mhs/state/image

@@ -18,7 +18,7 @@ else
   echo " ⌛ INFO ! "
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo ""
-  read -p "Enter username : " username
+  read -r -p "Enter username : " username
   read -s -p "Enter password : " password
   echo ""
   egrep "^$username" /etc/passwd > /dev/null

@@ -17,7 +17,7 @@ $servers
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-read -p '🌍 Type Server Name | Press [ENTER]: ' server < /dev/tty
+read -r -p '🌍 Type Server Name | Press [ENTER]: ' server < /dev/tty
 echo $server > /tmp/server.select
 idbackup=$(cat /tmp/server.select)
 
@@ -55,6 +55,6 @@ tee <<- EOF
 
 EOF
 
-read -p '🌍 Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+read -r -p '🌍 Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
 
 exit 0

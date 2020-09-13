@@ -282,7 +282,7 @@
 
 # EOF
 
-# read -p '↘️  Input Selection | Press [ENTER]: ' typed </dev/tty
+# read -r -p '↘️  Input Selection | Press [ENTER]: ' typed </dev/tty
 # if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
 # rcloneSettings
 # else
@@ -397,7 +397,7 @@
 
 # EOF
 
-# read -p '↘️  Press [ENTER] to deploy' typed </dev/tty
+# read -r -p '↘️  Press [ENTER] to deploy' typed </dev/tty
 
 # buildrcloneenv
 # systemctl daemon-reload
@@ -422,7 +422,7 @@
 
 # EOF
 
-# read -p '↘️  Acknowledge Info | Press [ENTER]' typed </dev/tty
+# read -r -p '↘️  Acknowledge Info | Press [ENTER]' typed </dev/tty
 
 # rcloneSettings
 # }
@@ -448,7 +448,7 @@
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 # EOF
-# read -p '↘️  Type User Agent | PRESS [ENTER]: ' varinput </dev/tty
+# read -r -p '↘️  Type User Agent | PRESS [ENTER]: ' varinput </dev/tty
 # if [[ "$varinput" == "exit" || "$varinput" == "Exit" || "$varinput" == "EXIT" || "$varinput" == "z" || "$varinput" == "Z" ]]; then rcloneSettings; fi
 
 # echo "$varinput" >/var/mhs/state/uagent

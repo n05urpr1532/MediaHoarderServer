@@ -54,7 +54,7 @@ question1() {
 
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
   if [ "$typed" == "1" ]; then
     exit
   elif [ "$typed" == "2" ]; then

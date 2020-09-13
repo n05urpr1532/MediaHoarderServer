@@ -35,7 +35,7 @@ MaxMind:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️ Type License Key of MaxMind | Press [ENTER]: ' typed </dev/tty
+  read -r -p '↘️ Type License Key of MaxMind | Press [ENTER]: ' typed </dev/tty
   echo $typed >/var/mhs/state/varken/geoip.key
 
 }
@@ -80,7 +80,7 @@ $chk
 EOF
 
  echo
-  read -p 'Confirm Info | PRESS [ENTER] ' typed </dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   clear && question1
 }
 
@@ -105,7 +105,7 @@ status=$(cat /var/mhs/state/varken/api.check)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed </dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed </dev/tty
 
   case $typed in
   1) api && layoutbase ;;

@@ -36,7 +36,7 @@ EOF
 
 phase1() {
 
-  read -p 'Type a Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Type a Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) webid && phase1 ;;
@@ -49,7 +49,7 @@ phase1() {
       if [[ "$efg" == "" ]]; then
         echo
         echo "SANITY CHECK: No Authorized Users have been Added! Exiting!"
-        read -p 'Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+        read -r -p 'Acknowledge Info | Press [ENTER] ' typed < /dev/tty
         question1
       fi
 
@@ -58,7 +58,7 @@ phase1() {
       if [ ! -e "$file" ]; then
         echo
         echo "SANITY CHECK: You Must @ Least Run the Web ID Interface Once!"
-        read -p 'Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+        read -r -p 'Acknowledge Info | Press [ENTER] ' typed < /dev/tty
         question1
       fi
 
@@ -68,7 +68,7 @@ phase1() {
       if [ "$ports" != "127.0.0.1:" ]; then
         echo
         echo "SANITY CHECK: Ports are open, MHS-Shield cannot be enabled until they are closed due to security risks!"
-        read -p 'Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+        read -r -p 'Acknowledge Info | Press [ENTER] ' typed < /dev/tty
         question1
       fi
 
@@ -112,7 +112,7 @@ EOF
 }
 
 phase3() {
-  read -p 'Type a Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Type a Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) phase31 && appexempt ;;
@@ -121,13 +121,13 @@ phase3() {
       emptycheck=$(cat /var/mhs/state/pgshield.ex15)
       if [[ "$emptycheck" == "" ]]; then
         echo
-        read -p 'No Apps have MHS-Shield Disabled! Exiting | Press [ENTER]'
+        read -r -p 'No Apps have MHS-Shield Disabled! Exiting | Press [ENTER]'
         appexempt
       fi
       rm -rf /var/mhs/state/auth/*
       echo ""
       echo "NOTE: Does not take effect until MHS-Shield is redeployed!"
-      read -p 'Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+      read -r -p 'Acknowledge Info | Press [ENTER] ' typed < /dev/tty
       appexempt
       ;;
     z) question1 ;;
@@ -175,7 +175,7 @@ $notrun
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '🌍 Type APP to disable MHS-Shield | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '🌍 Type APP to disable MHS-Shield | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then appexempt; fi
 
@@ -184,14 +184,14 @@ EOF
 
   if [[ "$usercheck" == "" ]]; then
     echo
-    read -p 'App does not exist! | Press [ENTER] ' note < /dev/tty
+    read -r -p 'App does not exist! | Press [ENTER] ' note < /dev/tty
     appexempt
   fi
 
   touch /var/mhs/state/auth/$typed
   echo
   echo "NOTE: No effect until MHS-Shield or the app is redeployed!"
-  read -p '🌍 Acknoweldge! | Press [ENTER] ' note < /dev/tty
+  read -r -p '🌍 Acknoweldge! | Press [ENTER] ' note < /dev/tty
   appexempt
 }
 
@@ -200,7 +200,7 @@ phase21() {
   emptycheck=$(cat /var/mhs/state/pgshield.ex15)
   if [[ "$emptycheck" == "" ]]; then
     echo
-    read -p 'No apps are exempt! Exiting | Press [ENTER]'
+    read -r -p 'No apps are exempt! Exiting | Press [ENTER]'
     appexempt
   fi
   ### Blank Out Temp List
@@ -235,7 +235,7 @@ $notrun
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '🌍 Type app to enable MHS-Shield | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '🌍 Type app to enable MHS-Shield | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then appexempt; fi
 
@@ -244,14 +244,14 @@ EOF
 
   if [[ "$usercheck" == "" ]]; then
     echo
-    read -p 'App does not exist! | Press [ENTER] ' note < /dev/tty
+    read -r -p 'App does not exist! | Press [ENTER] ' note < /dev/tty
     appexempt
   fi
 
   rm -rf /var/mhs/state/auth/$typed
   echo
   echo "NOTE: No effect until MHS-Shield or the app is redeployed!"
-  read -p '🌍 Acknoweldge! | Press [ENTER] ' note < /dev/tty
+  read -r -p '🌍 Acknoweldge! | Press [ENTER] ' note < /dev/tty
   appexempt
 }
 
@@ -272,15 +272,15 @@ https://github.com/n05urpr1532-MHA-Team/PTS-Team/wiki/PTS-Shield
 
 EOF
 
-  read -p '↘️  Web Client ID     | Press [Enter]: ' public < /dev/tty
+  read -r -p '↘️  Web Client ID     | Press [Enter]: ' public < /dev/tty
   if [ "$public" = "exit" ]; then question1; fi
   echo "$public" > /var/mhs/state/shield.clientid
 
-  read -p '↘️  Web Client Secret | Press [Enter]: ' secret < /dev/tty
+  read -r -p '↘️  Web Client Secret | Press [Enter]: ' secret < /dev/tty
   if [ "$secret" = "exit" ]; then question1; fi
   echo "$secret" > /var/mhs/state/shield.clientsecret
 
-  read -p '🔑 Client ID & Secret Set |  Press [ENTER] ' public < /dev/tty
+  read -r -p '🔑 Client ID & Secret Set |  Press [ENTER] ' public < /dev/tty
   touch /var/mhs/state/auth.idset
   question1
 }
@@ -308,40 +308,40 @@ EOF
 
 phase2() {
 
-  read -p 'Type a Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Type a Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1)
       echo
-      read -p 'User Email to Add | Press [ENTER]: ' typed < /dev/tty
+      read -r -p 'User Email to Add | Press [ENTER]: ' typed < /dev/tty
 
       emailcheck=$(echo $typed | grep "@")
       if [[ "$emailcheck" == "" ]]; then
-        read -p 'Invalid E-Mail! | Press [ENTER] ' note < /dev/tty
+        read -r -p 'Invalid E-Mail! | Press [ENTER] ' note < /dev/tty
         email
       fi
 
       usercheck=$(cat /var/mhs/state/pgshield.emails | grep $typed)
       if [[ "$usercheck" != "" ]]; then
-        read -p 'User Already Exists! | Press [ENTER] ' note < /dev/tty
+        read -r -p 'User Already Exists! | Press [ENTER] ' note < /dev/tty
         email
       fi
-      read -p 'User Added | Press [ENTER] ' note < /dev/tty
+      read -r -p 'User Added | Press [ENTER] ' note < /dev/tty
       echo "$typed" >> /var/mhs/state/pgshield.emails
       email
       ;;
     2)
       echo
-      read -p 'User Email to Remove | Press [ENTER]: ' typed < /dev/tty
+      read -r -p 'User Email to Remove | Press [ENTER]: ' typed < /dev/tty
       testremove=$(cat /var/mhs/state/pgshield.emails | grep $typed)
       if [[ "$testremove" == "" ]]; then
-        read -p 'User does not exist | Press [ENTER] ' typed < /dev/tty
+        read -r -p 'User does not exist | Press [ENTER] ' typed < /dev/tty
         email
       fi
       sed -i -e "/$typed/d" /var/mhs/state/pgshield.emails
       echo ""
       echo "NOTE: Does not take effect until MHS-Shield is redeployed!"
-      read -p 'Removed User | Press [ENTER] ' typed < /dev/tty
+      read -r -p 'Removed User | Press [ENTER] ' typed < /dev/tty
       email
       ;;
     3)
@@ -350,7 +350,7 @@ phase2() {
       echo ""
       cat /var/mhs/state/pgshield.emails
       echo
-      read -p 'Finished? | Press [ENTER] ' typed < /dev/tty
+      read -r -p 'Finished? | Press [ENTER] ' typed < /dev/tty
       email
       ;;
     4)
@@ -361,7 +361,7 @@ phase2() {
       touch /var/mhs/state/pgshield.emails
       echo
       docker stop oauth
-      read -p 'All Prior Users Removed! | Press [ENTER] ' typed < /dev/tty
+      read -r -p 'All Prior Users Removed! | Press [ENTER] ' typed < /dev/tty
       email
       ;;
     z) question1 ;;
@@ -397,7 +397,7 @@ shieldcheck() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p 'Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p 'Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     exit
   fi
 }
@@ -408,7 +408,7 @@ rebuild() {
 
 doneenter() {
   echo
-  read -p 'All done | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'All done | PRESS [ENTER] ' typed < /dev/tty
 }
 
 endbanner() {

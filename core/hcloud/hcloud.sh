@@ -69,7 +69,7 @@ main() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1)
@@ -110,7 +110,7 @@ create() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p 'Type a Server Name | Press [ENTER]: ' name < /dev/tty
+  read -r -p 'Type a Server Name | Press [ENTER]: ' name < /dev/tty
   tee <<- EOF
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -130,7 +130,7 @@ EOF
 EOF
 
   # Standby
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) os="ubuntu-18.04" ;;
@@ -183,7 +183,7 @@ Command: ssh root@$serverip
 FIRST TIME LOGIN - Initial Password: $initialpw
 
 EOF
-  read -p 'Press [ENTER] to Exit ' fill < /dev/tty
+  read -r -p 'Press [ENTER] to Exit ' fill < /dev/tty
 
   # Creates Command pg-whatevername 2
   echo "" >> /bin/pg-$name
@@ -211,7 +211,7 @@ Server Name
 EOF
   hcloud server list | tail -n +2 | cut -d " " -f2- | cut -d " " -f2- | cut -d " " -f2-
   echo
-  read -p 'Press [ENTER] to Continue! ' typed < /dev/tty
+  read -r -p 'Press [ENTER] to Continue! ' typed < /dev/tty
 }
 
 #------------------------------------
@@ -230,7 +230,7 @@ EOF
   hcloud server list | tail -n +2 | cut -d " " -f2- | cut -d " " -f2- | cut -d " " -f2-
   echo
   echo "[Z] Exit"
-  read -p 'Type a Server to Destroy | Press [ENTER]: ' destroy < /dev/tty
+  read -r -p 'Type a Server to Destroy | Press [ENTER]: ' destroy < /dev/tty
   if [[ "$destroy" == "exit" || "$destroy" == "Exit" || "$destroy" == "EXIT" || "$destroy" == "z" || "$destroy" == "Z" ]]; then
     main
     exit
@@ -245,7 +245,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-      read -p 'Press [ENTER] to Continue! ' typed < /dev/tty
+      read -r -p 'Press [ENTER] to Continue! ' typed < /dev/tty
       main
     fi
     echo
@@ -257,7 +257,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p 'Press [ENTER] to Continue! ' typed < /dev/tty
+    read -r -p 'Press [ENTER] to Continue! ' typed < /dev/tty
     rm -rf /bin/pg-$destroy
   fi
 }
@@ -280,7 +280,7 @@ EOF
   tac -r /opt/mhs/etc/mhs/server.store
   echo "" &
   echo ""
-  read -p 'Press [ENTER] to Continue! ' corn < /dev/tty
+  read -r -p 'Press [ENTER] to Continue! ' corn < /dev/tty
 }
 ##############################################################
 installtest

@@ -6,14 +6,14 @@ source /opt/mhs/lib/core/functions/functions.sh
 
 queued() {
   echo
-  read -p "⛔️ ERROR - $typed Already Queued! | Press [ENTER] " typed < /dev/tty
+  read -r -p "⛔️ ERROR - $typed Already Queued! | Press [ENTER] " typed < /dev/tty
   question1
 }
 
 exists() {
   echo ""
   echo "⛔️ ERROR - $typed Already Installed!"
-  read -p '⚠️  Reinstall? [Y/N] | Press [ENTER] ' foo < /dev/tty
+  read -r -p '⚠️  Reinstall? [Y/N] | Press [ENTER] ' foo < /dev/tty
 
   if [[ "$foo" == "y" || "$foo" == "Y" ]]; then
     part1
@@ -26,7 +26,7 @@ badinputgce() {
   echo ""
   echo "⛔️ ERROR - Bad Input! $typed not exist"
   echo ""
-  read -p 'PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'PRESS [ENTER] ' typed < /dev/tty
 }
 
 cronexe() {
@@ -135,7 +135,7 @@ $buildup
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↪️ Type app to queue install | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↪️ Type app to queue install | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "deploy" || "$typed" == "Deploy" || "$typed" == "DEPLOY" || "$typed" == "install" || "$typed" == "Install" || "$typed" == "INSTALL" || "$typed" == "a" || "$typed" == "A" ]]; then question2; fi
 
@@ -174,7 +174,7 @@ part1() {
 }
 
 final() {
-  read -p '✅ Process Complete! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '✅ Process Complete! | PRESS [ENTER] ' typed < /dev/tty
   echo
   exit
 }

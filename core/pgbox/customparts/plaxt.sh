@@ -24,9 +24,9 @@ Go Back? Type > exit
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '↘️ Type API Client | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type API Client | Press [ENTER]: ' typed < /dev/tty
   echo $typed > /var/mhs/state/trakt.id
-  read -p '↘️ Type API Secret | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️ Type API Secret | Press [ENTER]: ' typed < /dev/tty
   echo $typed > /var/mhs/state/trakt.sec
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
@@ -44,7 +44,7 @@ INFO: Messed up? Rerun this API Interface to update the information!
 
 EOF
 
-    read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
   fi
 }
 

@@ -13,7 +13,7 @@ if [ "$menu" == "2" ]; then
   sleep 3
 
   while true; do
-    read -p "Pay Attention! Do YOU WANT to Continue Uninstalling PG (y or n)!? " yn
+    read -r -p "Pay Attention! Do YOU WANT to Continue Uninstalling PG (y or n)!? " yn
     case $yn in
       [Yy]*)
         echo ""
@@ -72,7 +72,7 @@ if [ "$menu" == "2" ]; then
   rm -rf /var/lib/docker
 
   while true; do
-    read -p "Pay Attention! Do you want to DELETE /opt/mhs/apps-data (y or n)? " yn
+    read -r -p "Pay Attention! Do you want to DELETE /opt/mhs/apps-data (y or n)? " yn
     case $yn in
       [Yy]*)
         echo ""

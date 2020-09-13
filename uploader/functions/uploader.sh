@@ -12,7 +12,7 @@ NOTE: $type already exists! To proceed, we must delete the prior
 configuration for you.
 
 EOF
-    read -p '↘️  Proceed? y or n | Press [ENTER]: ' typed < /dev/tty
+    read -r -p '↘️  Proceed? y or n | Press [ENTER]: ' typed < /dev/tty
 
     if [[ "$typed" == "Y" || "$typed" == "y" ]]; then
       a=b
@@ -42,7 +42,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
   fi
 }
 
@@ -66,7 +66,7 @@ https://accounts.google.com/o/oauth2/auth?client_id=$public&redirect_uri=urn:iet
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Token | PRESS [ENTER]: ' token < /dev/tty
+  read -r -p '↘️  Token | PRESS [ENTER]: ' token < /dev/tty
   if [ "$token" = "exit" ] || [ "$token" = "EXIT" ] || [ "$token" = "q" ] || [ "$token" = "Q" ]; then mountsmenu; fi
   curl --request POST --data "code=$token&client_id=$public&client_secret=$secret&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code" https://accounts.google.com/o/oauth2/token > /var/mhs/state/pgtokentm.output
   cat /var/mhs/state/pgtokentm.output | grep access_token | awk '{ print $2 }' | cut -c2- | rev | cut -c3- | rev > /var/mhs/state/pgtokentm2.output
@@ -85,7 +85,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Acknowledge Info | PRESS [ENTER] ' temp < /dev/tty
+  read -r -p '↘️  Acknowledge Info | PRESS [ENTER] ' temp < /dev/tty
 }
 
 tokenscript() {
@@ -107,7 +107,7 @@ EOF
   done < /var/mhs/state/teamdrive.id
 
   echo ""
-  read -p '↘️  Type Number | PRESS [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | PRESS [ENTER]: ' typed < /dev/tty
   if [[ "$typed" -ge "1" && "$typed" -le "$A" ]]; then
     a=b
   else
@@ -143,7 +143,7 @@ $secret
 $display
 EOF
 
-  read -p '↘️  Proceed? y or n | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Proceed? y or n | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "Y" || "$typed" == "y" ]]; then
     a=b
@@ -169,7 +169,7 @@ https://accounts.google.com/o/oauth2/auth?client_id=$public&redirect_uri=urn:iet
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Token | PRESS [ENTER]: ' token < /dev/tty
+  read -r -p '↘️  Token | PRESS [ENTER]: ' token < /dev/tty
   if [ "$token" = "exit" ] || [ "$token" = "EXIT" ] || [ "$token" = "q" ] || [ "$token" = "Q" ]; then mountsmenu; fi
   curl --request POST --data "code=$token&client_id=$public&client_secret=$secret&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code" https://accounts.google.com/o/oauth2/token > /opt/mhs/etc/mhs/uploader.info
 
@@ -225,7 +225,7 @@ mountsmenu() {
 
 EOF
 
-    read -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
+    read -r -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
 
     if [ "$typed" == "1" ]; then
       publickeyinput
@@ -271,7 +271,7 @@ EOF
 
 EOF
 
-    read -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
+    read -r -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
 
     if [ "$typed" == "1" ]; then
       publickeyinput
@@ -322,7 +322,7 @@ EOF
 
 EOF
 
-    read -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
+    read -r -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
 
     if [ "$typed" == "1" ]; then
       publickeyinput
@@ -348,7 +348,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-        read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+        read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
         mountsmenu
       fi
       type=tdrive
@@ -390,7 +390,7 @@ EOF
 
 EOF
 
-    read -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
+    read -r -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
 
     if [ "$typed" == "1" ]; then
       publickeyinput
@@ -421,7 +421,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-        read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+        read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
         mountsmenu
       fi
       type=tdrive
@@ -451,7 +451,7 @@ encpasswdcheck() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     mountsmenu
   fi
 }
@@ -471,7 +471,7 @@ you will be locked out from all your data!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p ' ↘️  Type Prime PW | Press [ENTER]: ' bpassword < /dev/tty
+  read -r -p ' ↘️  Type Prime PW | Press [ENTER]: ' bpassword < /dev/tty
 
   if [ "$bpassword" == "" ]; then
     badinput
@@ -497,7 +497,7 @@ password, but may.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p ' ↘️  Type SALT PW | Press [ENTER]: ' bsalt < /dev/tty
+  read -r -p ' ↘️  Type SALT PW | Press [ENTER]: ' bsalt < /dev/tty
 
   if [ "$bsalt" == "" ]; then
     badinput
@@ -525,7 +525,7 @@ Secondary: $bsalt
 
 EOF
 
-  read -p '↘️  Type y or n | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type y or n | Press [ENTER]: ' typed < /dev/tty
 
   if [ "$typed" == "n" ]; then
     mountsmenu
@@ -553,7 +553,7 @@ NOTE: Visit reference for Google OAuth Keys!
 
 EOF
 
-  read -p '↘️  Client ID  | Press [Enter]: ' public < /dev/tty
+  read -r -p '↘️  Client ID  | Press [Enter]: ' public < /dev/tty
   if [ "$public" = "exit" ]; then mountsmenu; fi
   echo "$public" > /var/mhs/state/uploader.public
 
@@ -564,7 +564,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Acknowledge Info  | Press [ENTER] ' public < /dev/tty
+  read -r -p '↘️  Acknowledge Info  | Press [ENTER] ' public < /dev/tty
   mountsmenu
 }
 
@@ -581,7 +581,7 @@ NOTE: Visit reference for Google OAuth Keys!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Secret Key  | Press [Enter]: ' secret < /dev/tty
+  read -r -p '↘️  Secret Key  | Press [Enter]: ' secret < /dev/tty
   if [ "$secret" = "exit" ]; then mountsmenu; fi
   echo "$secret" > /var/mhs/state/uploader.secret
 
@@ -592,7 +592,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Acknowledge Info  | Press [ENTER] ' public < /dev/tty
+  read -r -p '↘️  Acknowledge Info  | Press [ENTER] ' public < /dev/tty
 
   mountsmenu
 }
@@ -618,7 +618,7 @@ Project ID: $projectid
 
 EOF
 
-  read -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
 
   if [ "$typed" == "1" ]; then
     projectestablish
@@ -644,7 +644,7 @@ projectestablish() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p ' ↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p ' ↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     projectmenu
   fi
 
@@ -680,7 +680,7 @@ EOF
 
 EOF
   echo $typed > /var/mhs/state/uploader.project
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
   projectmenu
 
 }
@@ -718,7 +718,7 @@ transportmode() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Set Choice | Press [ENTER]: ' typed < /dev/tty
 
   if [ "$typed" == "1" ]; then
     echo "mu" > /var/mhs/state/uploader.transport && echo
@@ -746,7 +746,7 @@ EOF
 }
 
 changeproject() {
-  read -p '💬 Set/Change Project ID? (y/n)| Press [ENTER] ' typed < /dev/tty
+  read -r -p '💬 Set/Change Project ID? (y/n)| Press [ENTER] ' typed < /dev/tty
   if [[ "$typed" == "n" || "$typed" == "N" ]]; then
     question1
   elif [[ "$typed" == "y" || "$typed" == "Y" ]]; then
@@ -769,7 +769,7 @@ EOF
   cat /var/mhs/state/projects.list | cut -d' ' -f1 | tail -n +2
   cat /var/mhs/state/projects.list | cut -d' ' -f1 | tail -n +2 > /var/mhs/state/project.cut
   echo ""
-  read -p '↘️  Type Project Name | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Project Name | Press [ENTER]: ' typed < /dev/tty
   echo ""
   list=$(cat /var/mhs/state/project.cut | grep $typed)
 
@@ -781,7 +781,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p ' ↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p ' ↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     projectidset
   fi
 }
@@ -869,7 +869,7 @@ FOR ENCRYPTION (IF SELECTED)
 
 EOF
     echo "⚠️  Not Activated" > /var/mhs/state/$type.uploader
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
     question1
   else
     tee <<- EOF
@@ -882,7 +882,7 @@ EOF
 
   fi
 
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
   echo "✅ Activated" > /var/mhs/state/$type.uploader
 
   ## Copy the Test File to the Real RClone Conf
@@ -907,7 +907,7 @@ deploychecks() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [Enter] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [Enter] ' typed < /dev/tty
     question1
   fi
 
@@ -919,7 +919,7 @@ EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [Enter] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [Enter] ' typed < /dev/tty
     question1
   fi
 }

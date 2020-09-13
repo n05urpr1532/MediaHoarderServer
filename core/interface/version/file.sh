@@ -23,7 +23,7 @@ echo "[Z] Exit"
 echo ""
 break=no
 while [ "$break" == "no" ]; do
-  read -p '↘️  Type | PRESS ENTER: ' typed
+  read -r -p '↘️  Type | PRESS ENTER: ' typed
   storage=$(grep $typed /var/mhs/state/ver.temp)
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then

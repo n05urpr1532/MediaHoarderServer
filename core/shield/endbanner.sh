@@ -57,7 +57,7 @@ EOF
 
   fi
 
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
 }
 
 ########################################################

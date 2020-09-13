@@ -32,7 +32,7 @@ Clone Clean deletes garbage files in your download folder.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
   case $typed in
     1) ccleanernzb && changeCloneCleanInterval ;;
     2) ccleanertorrent && changeCloneCleanInterval ;;
@@ -64,7 +64,7 @@ WARNING: Do not set this too low because legitmate files!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Type Minutes (Minimum is 30) | PRESS [ENTER]: ' varinput < /dev/tty
+  read -r -p '↘️  Type Minutes (Minimum is 30) | PRESS [ENTER]: ' varinput < /dev/tty
   if [[ "$varinput" == "exit" || "$varinput" == "Exit" || "$varinput" == "EXIT" || "$varinput" == "z" || "$varinput" == "Z" ]]; then
     changeCloneCleanInterval
   elif [[ "$varinput" =~ ^[0-9]*$ ]]; then
@@ -73,7 +73,7 @@ EOF
     fi
   elif [[ "$varinput" =~ ^[0-9a-zA-Z]*$ ]]; then
     echo "Only enter numbers! - Try again:"
-    read -p '↘️  Type Minutes (Minimum is 30) | PRESS [ENTER]: ' varinput < /dev/tty
+    read -r -p '↘️  Type Minutes (Minimum is 30) | PRESS [ENTER]: ' varinput < /dev/tty
     if [[ "$varinput" -ge "$mmcc" && "$varinput" -le "$mxcc" ]]; then
       echo "$varinput" > /var/mhs/state/cloneclean.nzb
     fi
@@ -103,7 +103,7 @@ WARNING: Do not set this too low because legitmate files!
 
 EOF
 
-  read -p '↘️  Type Minutes (Minimum is 30) | PRESS [ENTER]: ' varinput < /dev/tty
+  read -r -p '↘️  Type Minutes (Minimum is 30) | PRESS [ENTER]: ' varinput < /dev/tty
   if [[ "$varinput" == "exit" || "$varinput" == "Exit" || "$varinput" == "EXIT" || "$varinput" == "z" || "$varinput" == "Z" ]]; then
     changeCloneCleanInterval
   elif [[ "$varinput" =~ ^[0-9]*$ ]]; then
@@ -112,7 +112,7 @@ EOF
     fi
   elif [[ "$varinput" =~ ^[0-9a-zA-Z]*$ ]]; then
     echo "Only enter numbers! - Try again:"
-    read -p '↘️  Type Minutes (Minimum is 30) | PRESS [ENTER]: ' varinput < /dev/tty
+    read -r -p '↘️  Type Minutes (Minimum is 30) | PRESS [ENTER]: ' varinput < /dev/tty
     if [[ "$varinput" -ge "$mmcc" && "$varinput" -le "$mxcc" ]]; then
       echo "$varinput" > /var/mhs/state/cloneclean.torrent
     fi

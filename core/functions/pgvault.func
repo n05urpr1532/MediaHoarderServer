@@ -38,7 +38,7 @@ initial2() {
 final() {
   echo
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  read -p '✅ Process Complete! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '✅ Process Complete! | PRESS [ENTER] ' typed < /dev/tty
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   bash /opt/mhs/lib/backup-and-restore/pgvault.sh
   exit
@@ -46,12 +46,12 @@ final() {
 
 queued() {
   echo
-  read -p "⛔️ ERROR - $typed Already Queued! | Press [ENTER] " typed < /dev/tty
+  read -r -p "⛔️ ERROR - $typed Already Queued! | Press [ENTER] " typed < /dev/tty
 }
 
 badserver() {
   echo
-  read -p '⛔️ ERROR - Type an Exact Server Name | Press [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - Type an Exact Server Name | Press [ENTER] ' typed < /dev/tty
 }
 
 #not used yet
@@ -151,7 +151,7 @@ $servers
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '🌍 Type Server Name | Press [ENTER]: ' server < /dev/tty
+  read -r -p '🌍 Type Server Name | Press [ENTER]: ' server < /dev/tty
   echo $server > /tmp/server.select
 
   if [[ "$server" == "exit" || "$server" == "Exit" || "$server" == "EXIT" || "$server" == "z" || "$server" == "Z" ]]; then exit; fi
@@ -487,7 +487,7 @@ $buildup
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '🌍 Type APP for QUEUE | Type all to backup all apps | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '🌍 Type APP for QUEUE | Type all to backup all apps | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "all" || "$typed" == "All" || "$typed" == "ALL" ]]; then
     backup_all_start
@@ -536,7 +536,7 @@ $buildup
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '🌍 Type APP for QUEUE | Type all to restore all apps | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '🌍 Type APP for QUEUE | Type all to restore all apps | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "all" || "$typed" == "All" || "$typed" == "ALL" ]]; then restore_all_start; fi
 
@@ -578,7 +578,7 @@ primaryinterface() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p 'Type a Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Type a Number | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "1" ]]; then
     vaultbackup

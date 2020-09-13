@@ -38,7 +38,7 @@ not be interactive.
 EOF
 
   # Standby
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     Y) ansible-playbook /opt/mhs/lib/core/rclonededupe/dupedeploy.yml && setstart ;;
@@ -99,7 +99,7 @@ setstart() {
 EOF
 
   # Standby
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) bash /opt/mhs/lib/core/multihd/multihd.sh ;;

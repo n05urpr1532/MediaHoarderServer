@@ -23,7 +23,7 @@
 
 # EOF
 
-# read -p '↘️  Type User Agent | PRESS [ENTER]: ' varinput </dev/tty
+# read -r -p '↘️  Type User Agent | PRESS [ENTER]: ' varinput </dev/tty
 # if [[ "$varinput" == "exit" || "$varinput" == "Exit" || "$varinput" == "EXIT" || "$varinput" == "z" || "$varinput" == "Z" ]]; then rcloneSettings; fi
 # #######userinput##
 # echo "$varinput" >/var/mhs/state/uagent

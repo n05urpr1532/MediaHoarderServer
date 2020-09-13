@@ -25,7 +25,7 @@ Change the Stored Values?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Input Value | Press [Enter]: ' typed < /dev/tty
+    read -r -p '↘️  Input Value | Press [Enter]: ' typed < /dev/tty
     case $typed in
       2)
         rm -rf /opt/mhs/etc/mhs/.gcrypt 1> /dev/null 2>&1
@@ -62,7 +62,7 @@ Ensure that you input the CORRECT Client ID from your current project!
 
 EOF
 
-  read -p '↘️  Client ID | Press [Enter]: ' clientid < /dev/tty
+  read -r -p '↘️  Client ID | Press [Enter]: ' clientid < /dev/tty
   if [ "$clientid" = "" ]; then keyinput; fi
   if [ "$clientid" = "exit" ]; then clonestart; fi
   keyinputsecret
@@ -85,7 +85,7 @@ Ensure thatyou input the CORRECT Secret ID from your current project!
 
 EOF
 
-  read -p '↘️  Secret ID | Press [Enter]: ' secretid < /dev/tty
+  read -r -p '↘️  Secret ID | Press [Enter]: ' secretid < /dev/tty
   if [ "$secretid" = "" ]; then keyinputsecret; fi
   if [ "$secretid" = "exit" ]; then clonestart; fi
 
@@ -111,7 +111,7 @@ Is the following information correct?
 
 EOF
 
-  read -p '↘️  Input Information | Press [Enter]: ' typed < /dev/tty
+  read -r -p '↘️  Input Information | Press [Enter]: ' typed < /dev/tty
 
   case $typed in
     1)
@@ -119,24 +119,24 @@ EOF
       echo "$secretid" > /var/mhs/state/uploader.secret
       echo
       echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      read -p '↘️  Information Stored | Press [Enter] ' secretid < /dev/tty
+      read -r -p '↘️  Information Stored | Press [Enter] ' secretid < /dev/tty
       echo "SET" > /var/mhs/state/uploader.id
       ;;
     2)
       echo
       echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      read -p '↘️  Restarting Process | Press [Enter] ' secretid < /dev/tty
+      read -r -p '↘️  Restarting Process | Press [Enter] ' secretid < /dev/tty
       keyinputpublic
       ;;
     z)
       echo
       echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      read -p '↘️  Nothing Saved! Exiting! | Press [Enter] ' secretid < /dev/tty
+      read -r -p '↘️  Nothing Saved! Exiting! | Press [Enter] ' secretid < /dev/tty
       ;;
     Z)
       echo
       echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      read -p '↘️  Nothing Saved! Exiting! | Press [Enter] ' secretid < /dev/tty
+      read -r -p '↘️  Nothing Saved! Exiting! | Press [Enter] ' secretid < /dev/tty
       ;;
     *)
       clonestart
@@ -164,7 +164,7 @@ to mount the required drives!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     clonestart
   fi
 }

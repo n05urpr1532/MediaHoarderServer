@@ -154,7 +154,7 @@ elif [[ "$file3" != "1" ]]; then
 	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 	EOF
-    read -p 'Press [ENTER] to Continue! ' typed < /dev/tty
+    read -r -p 'Press [ENTER] to Continue! ' typed < /dev/tty
     rm -rf /var/mhs/state/gce.failed 1> /dev/null 2>&1
     rm -rf /var/mhs/state/gce.false 1> /dev/null 2>&1
     rm -rf /var/mhs/state/nvme.log 1> /dev/null 2>&1

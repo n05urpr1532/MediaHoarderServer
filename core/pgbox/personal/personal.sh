@@ -9,7 +9,7 @@ variable /var/mhs/state/boxpersonal.branch NON-SET
 
 queued() {
   echo
-  read -p "⛔️ ERROR - $typed Already Queued! | Press [ENTER] " typed < /dev/tty
+  read -r -p "⛔️ ERROR - $typed Already Queued! | Press [ENTER] " typed < /dev/tty
   question1
 }
 
@@ -20,7 +20,7 @@ value() {
 exists() {
   echo ""
   echo "⛔️ ERROR - $typed Already Installed!"
-  read -p '⚠️  Reinstall? [Y/N] | Press [ENTER] ' foo < /dev/tty
+  read -r -p '⚠️  Reinstall? [Y/N] | Press [ENTER] ' foo < /dev/tty
 
   if [[ "$foo" == "y" || "$foo" == "Y" ]]; then
     part1
@@ -131,7 +131,7 @@ $buildup
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↪️ Type app to queue install | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↪️ Type app to queue install | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "deploy" || "$typed" == "Deploy" || "$typed" == "DEPLOY" || "$typed" == "install" || "$typed" == "Install" || "$typed" == "INSTALL" || "$typed" == "a" || "$typed" == "A" ]]; then question2; fi
 
@@ -170,7 +170,7 @@ part1() {
 }
 
 final() {
-  read -p '✅ Process Complete! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '✅ Process Complete! | PRESS [ENTER] ' typed < /dev/tty
   echo
   exit
 }
@@ -259,7 +259,7 @@ Branch: $boxbranch
 
 EOF
 
-  read -p 'Type a Selection | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Type a Selection | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1)
@@ -274,9 +274,9 @@ Username / Branch & Repo are both case sensitive!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-      read -p 'Username | Press [ENTER]: ' boxuser < /dev/tty
-      read -p 'REPO     | Press [ENTER]: ' boxrepo < /dev/tty
-      read -p 'Branch   | Press [ENTER]: ' boxbranch < /dev/tty
+      read -r -p 'Username | Press [ENTER]: ' boxuser < /dev/tty
+      read -r -p 'REPO     | Press [ENTER]: ' boxrepo < /dev/tty
+      read -r -p 'Branch   | Press [ENTER]: ' boxbranch < /dev/tty
       echo "$boxuser" > /var/mhs/state/boxpersonal.user
       echo "$boxrepo" > /var/mhs/state/boxpersonal.repo
       echo "$boxbranch" > /var/mhs/state/boxpersonal.branch
@@ -286,7 +286,7 @@ EOF
       existcheck=$(git ls-remote --exit-code -h "https://github.com/$(cat /var/mhs/state/boxpersonal.user)/$(cat /var/mhs/state/boxpersonal.repo)" | grep "$(cat /var/mhs/state/boxpersonal.branch)")
       if [ "$existcheck" == "" ]; then
         echo
-        read -p '💬 Exiting! Forked Version Does Not Exist! | Press [ENTER]: ' typed < /dev/tty
+        read -r -p '💬 Exiting! Forked Version Does Not Exist! | Press [ENTER]: ' typed < /dev/tty
         mainbanner
       fi
 

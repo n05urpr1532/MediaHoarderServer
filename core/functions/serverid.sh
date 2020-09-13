@@ -10,7 +10,7 @@ serverid() {
 ↘️   Establishing Server ID     💬  Use One Word & Keep it Simple
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '🌏  TYPE Server ID | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '🌏  TYPE Server ID | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "" ]]; then
     tee <<- EOF
@@ -41,7 +41,7 @@ serveridnew() {
 ↘️   Establishing New Server ID   💬  Use One Word & Keep it Simple
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
-  read -p '🌏  TYPE Server ID | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '🌏  TYPE Server ID | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "" ]]; then
     tee <<- EOF
@@ -100,7 +100,7 @@ setupnew() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) serveridnew && clear && exit ;;

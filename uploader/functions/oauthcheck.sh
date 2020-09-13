@@ -36,7 +36,7 @@ EOF
     if [[ "$oauthcheck" == "gdrive" ]]; then rm -rf /opt/mhs/etc/mhs/.gcrypt 1> /dev/null 2>&1; fi
     if [[ "$oauthcheck" == "tdrive" ]]; then rm -rf /opt/mhs/etc/mhs/.tcrypt 1> /dev/null 2>&1; fi
 
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
     clonestart
   else
     tee <<- EOF

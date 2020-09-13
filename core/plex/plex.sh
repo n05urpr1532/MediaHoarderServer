@@ -8,7 +8,7 @@ touch /var/mhs/state/plex.claim
 # BAD INPUT
 badinput() {
   echo
-  read -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
 }
 
 start0() {
@@ -37,7 +37,7 @@ If you do it , it will not work and you will have to reinstall PLEX!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
 
@@ -62,7 +62,7 @@ this step as you won't need to claim it again.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p 'Plex Server Claim Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p 'Plex Server Claim Number | Press [ENTER]: ' typed < /dev/tty
   echo $typed > /var/mhs/state/plex.claim
 
   #####LSIO part
@@ -96,7 +96,7 @@ be on the bleeding edge but still want the latest public updates.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) echo "docker" > /var/mhs/state/plex.updaterole ;;

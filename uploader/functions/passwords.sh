@@ -30,7 +30,7 @@ WARNING: Changing the values will RESET & DELETE the following:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Input Value | Press [Enter]: ' typed < /dev/tty
+    read -r -p '↘️  Input Value | Press [Enter]: ' typed < /dev/tty
     case $typed in
       2)
         rm -rf /var/mhs/state/uploader.password 1> /dev/null 2>&1
@@ -65,7 +65,7 @@ risk of encryption; forgetfulness will cost you!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Type Main Password | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Main Password | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then clonestart; fi
   if [[ "$typed" == "" ]]; then blitzpasswordmain; fi
@@ -91,7 +91,7 @@ risk of encryption; forgetfulness will cost you!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Type SALT Password | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type SALT Password | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then clonestart; fi
   if [[ "$typed" == "" ]]; then blitzpasswordsalt; fi
@@ -118,7 +118,7 @@ SALT   : $secondarypassword
 
 EOF
 
-  read -p '↘️  Type y or n | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type y or n | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "n" ]]; then
     blitzpasswordmain
@@ -141,7 +141,7 @@ order to read the data!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
   clonestart
 }
 
@@ -164,7 +164,7 @@ to encrypt your data!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     clonestart
   fi
 }

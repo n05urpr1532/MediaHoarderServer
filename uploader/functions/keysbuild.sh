@@ -32,7 +32,7 @@ NOTE 3: 20 Keys are only for GCE Feeder !!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Type a Number [ 2 thru 20 ] | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type a Number [ 2 thru 20 ] | Press [ENTER]: ' typed < /dev/tty
 
   exitclone
 
@@ -192,7 +192,7 @@ are detected! Exiting!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-    read -p '↘️  Acknowledge Info! | PRESS [ENTER] ' token < /dev/tty
+    read -r -p '↘️  Acknowledge Info! | PRESS [ENTER] ' token < /dev/tty
     clonestart
   fi
 
@@ -226,7 +226,7 @@ containers losing metadata (due to being unable to access teamdrives)!
 
 EOF
 
-  read -p '↘️  Type y or n | PRESS [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type y or n | PRESS [ENTER]: ' typed < /dev/tty
   case $typed in
     y) yesdeletekeys ;;
     Y) yesdeletekeys ;;
@@ -244,6 +244,6 @@ yesdeletekeys() {
   done < /var/mhs/state/.gcloudblitz
 
   echo
-  read -p '↘️  Process Complete! | PRESS [ENTER]: ' token < /dev/tty
+  read -r -p '↘️  Process Complete! | PRESS [ENTER]: ' token < /dev/tty
   clonestart
 }

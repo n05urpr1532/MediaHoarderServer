@@ -19,7 +19,7 @@ NOTE: Start with a / and end with no trailing slash!
 EOF
 
 # Standby
-read -p 'TYPE the Location & Press [ENTER]: ' typed < /dev/tty
+read -r -p 'TYPE the Location & Press [ENTER]: ' typed < /dev/tty
 
 tee <<- EOF
 

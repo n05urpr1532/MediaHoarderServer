@@ -53,11 +53,11 @@ EOF
 
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
   if [[ "$typed" == "A" || "$typed" == "a" ]]; then
     exit
   elif [ "$typed" == "1" ]; then
-    read -p "🌍 Type subdomain to use for $program | Press [ENTER]: " typed < /dev/tty
+    read -r -p "🌍 Type subdomain to use for $program | Press [ENTER]: " typed < /dev/tty
 
     if [[ "$typed" == "" ]]; then
       badinput1
@@ -70,7 +70,7 @@ EOF
       fi
     fi
   elif [ "$typed" == "2" ]; then
-    read -p "🌍 Type port 1025-65535 to use for $program | blank for default | Press [ENTER]: " typed < /dev/tty
+    read -r -p "🌍 Type port 1025-65535 to use for $program | blank for default | Press [ENTER]: " typed < /dev/tty
     if [[ "$typed" == "" ]]; then
       echo "" > "/var/mhs/state/$program.port"
     else

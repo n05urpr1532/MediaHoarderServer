@@ -52,7 +52,7 @@ tee <<- EOF
 EOF
 
 # Standby
-read -p 'Type an Application Name | Press [ENTER] | [Z] Exit: ' typed < /dev/tty
+read -r -p 'Type an Application Name | Press [ENTER] | [Z] Exit: ' typed < /dev/tty
 
 if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then exit; fi
 
@@ -126,4 +126,4 @@ if [ -e "/opt/mhs/lib/apps-community/$new.yml" ]; then ansible-playbook /opt/mhs
 echo "standard" > /var/mhs/state/tld.type
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-read -p '✅️ Process Complete! Acknowledge Info | Press [ENTER] ' name < /dev/tty
+read -r -p '✅️ Process Complete! Acknowledge Info | Press [ENTER] ' name < /dev/tty

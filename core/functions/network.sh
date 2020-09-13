@@ -21,13 +21,13 @@ question1() {
 EOF
 
   # Standby
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1)
       sudo wget -qO- bench.sh | bash
       echo ""
-      read -p '🌍 Process Complete | Press [ENTER] ' typed < /dev/tty
+      read -r -p '🌍 Process Complete | Press [ENTER] ' typed < /dev/tty
       question1
       ;;
     2)
@@ -36,14 +36,14 @@ EOF
       curl -LsO git.io/bench.sh
       chmod +x bench.sh && ./bench.sh -a
       echo ""
-      read -p '🌍 Process Complete | Press [ENTER] ' typed < /dev/tty
+      read -r -p '🌍 Process Complete | Press [ENTER] ' typed < /dev/tty
       question1
       ;;
     3)
       curl -LsO git.io/bench.sh
       chmod +x bench.sh && ./bench.sh -speed
       echo ""
-      read -p '🌍 Process Complete | Press [ENTER] ' typed < /dev/tty
+      read -r -p '🌍 Process Complete | Press [ENTER] ' typed < /dev/tty
       question1
       ;;
     z) exit ;;

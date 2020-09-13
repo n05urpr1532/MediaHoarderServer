@@ -48,7 +48,7 @@ TIPS:
 [ 2. ] Did you ensure that the gcrypt overlapped on gdrive per the wiki?
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
     question1
   else
     tee <<- EOF
@@ -101,7 +101,7 @@ TIPS:
 [ 1. ] Did you set up your $type accordingly to the wiki?
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
     question1
   else
     tee <<- EOF
@@ -154,7 +154,7 @@ TIPS:
 [ 1. ] Did you set up your $type accordingly to the wiki?
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
     question1
   else
     tee <<- EOF
@@ -207,7 +207,7 @@ TIPS:
 [ 1. ] Did you set up your keys and share out your emails per the blitz wiki?
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
     question1
   else
     tee <<- EOF
@@ -264,7 +264,7 @@ TIPS:
 
 EOF
     echo "Not Active" > /var/mhs/state/gdrive.uploader
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
     question1
   else
     tee <<- EOF
@@ -276,7 +276,7 @@ EOF
 EOF
 
   fi
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
   EOF
 }
 
@@ -331,7 +331,7 @@ Items listed are all service accounts that have been created! Proceeding
 onward will destroy all service accounts and current keys!
 
 EOF
-  read -p '🌍 Proceed? y or n | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '🌍 Proceed? y or n | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "Y" || "$typed" == "y" ]]; then
     deletekeys2
@@ -424,7 +424,7 @@ NOTE 4: maximum of SAC is 100 , remove unused keys !!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Type a Number [ 1 thru 20 ] | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type a Number [ 1 thru 20 ] | Press [ENTER]: ' typed < /dev/tty
 
   num=$typed
   echo ""
@@ -491,7 +491,7 @@ EOF
 💬 Use the E-Mail Generator Next! Do Not Forget!
 
 EOF
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed < /dev/tty
 }
 
 deploykeys2() {
@@ -518,7 +518,7 @@ $projectlist
 
 EOF
 
-  read -p '↘️  Type EXACT Project Name to Utilize | Press [ENTER]: ' typed2 < /dev/tty
+  read -r -p '↘️  Type EXACT Project Name to Utilize | Press [ENTER]: ' typed2 < /dev/tty
   list=$(cat /var/mhs/state/project.cut | grep $typed2)
   if [ "$list" == "" ]; then
     badinput && projectid
@@ -534,7 +534,7 @@ EOF
   gcloud services enable drive.googleapis.com --project $typed2
   echo $typed2 > /var/mhs/state/project.final
   echo
-  read -p '🌍 Process Complete | Press [ENTER] ' typed2 < /dev/tty
+  read -r -p '🌍 Process Complete | Press [ENTER] ' typed2 < /dev/tty
 
 }
 
@@ -593,7 +593,7 @@ TIPS:
 1. Did you share out your emails to your teamdrives?
 
 EOF
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
     question1
   fi
 }
@@ -637,7 +637,7 @@ TIPS:
 
 EOF
     rchecker=fail
-    read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+    read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
     question1
   fi
 }
@@ -650,7 +650,7 @@ pgbdeploy() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
+  read -r -p '↘️  Acknowledge Info | Press [ENTER] ' typed2 < /dev/tty
 }
 
 keymenu() {
@@ -683,7 +683,7 @@ keymenu() {
 
 EOF
 
-  read -p '↘️  Type Choice | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Choice | Press [ENTER]: ' typed < /dev/tty
 
   if [ "$typed" == "1" ]; then
     gcloud auth login
@@ -701,7 +701,7 @@ EOF
     fi
   elif [ "$typed" == "4" ]; then
     bash /opt/mhs/lib/uploader/emails.sh && echo
-    read -p '↘️  Confirm Info | Press [ENTER]: ' typed < /dev/tty
+    read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
     keymenu
   elif [[ "$typed" == "Z" || "$typed" == "z" ]]; then
     question1

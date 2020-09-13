@@ -103,17 +103,17 @@ tokencreate() {
 }
 badinput() {
   echo
-  read -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p '⛔️ ERROR - BAD INPUT! | PRESS [ENTER] ' typed < /dev/tty
   clear && question1
 }
 dontwork() {
   echo
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   clear && exit 0
 }
 works() {
   echo
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   clear && question1
 }
 credits() {
@@ -137,12 +137,12 @@ credits() {
 #                   GNU General Public License v3.0                     #
 #########################################################################
 '
-  read -p 'Confirm Info | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'Acknowledge Info | PRESS [ENTER] ' < /dev/tty
   clear && question1
 }
 doneenter() {
   echo
-  read -p 'All done | PRESS [ENTER] ' typed < /dev/tty
+  read -r -p 'All done | PRESS [ENTER] ' typed < /dev/tty
   clear && question1
 }
 
@@ -237,7 +237,7 @@ entry before correcting the match on the new item.
 
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) lang && clear && fxmatch ;;
@@ -269,7 +269,7 @@ Default is "en"
 
 EOF
 
-  read -p '↘️  Type Lang | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Lang | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" == "exit" || "$typed" == "Exit" || "$typed" == "EXIT" || "$typed" == "z" || "$typed" == "Z" ]]; then
     fxmatch
@@ -286,7 +286,7 @@ Language Set Is: $typed
 EOF
 
     echo $typed > /var/mhs/state/pgscan/fixmatch.lang
-    read -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
+    read -r -p '🌎 Acknowledge Info | Press [ENTER] ' typed < /dev/tty
     fxmatch
   fi
 }
@@ -305,7 +305,7 @@ runs() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) echo "true" > /var/mhs/state/pgscan/fixmatch.status && fxmatch ;;
@@ -390,7 +390,7 @@ undeployed() {
 
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) tokencreate && clear && question1 ;;
@@ -444,7 +444,7 @@ PAS Webhook ARRs : [ $showpaspage ]
 
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) tokencreate && clear && question1 ;;

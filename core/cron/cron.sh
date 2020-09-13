@@ -22,7 +22,7 @@ question1() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
   if [ "$typed" == "1" ]; then
     ansible-playbook /opt/mhs/lib/core/cron/remove.yml && exit
   elif [ "$typed" == "2" ]; then
@@ -57,7 +57,7 @@ RANDOM
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   if [[ "$typed" -ge "0" && "$typed" -le "7" ]]; then
     echo $typed > /var/mhs/state/cron/cron.day && break=1
@@ -85,7 +85,7 @@ Type an HOUR from [0 to 23]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type a Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type a Number | Press [ENTER]: ' typed < /dev/tty
   if [[ "$typed" -ge "0" && "$typed" -le "23" ]]; then
     echo $typed > /var/mhs/state/cron/cron.hour && break=1
   else badinput; fi

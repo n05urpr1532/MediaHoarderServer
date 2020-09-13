@@ -21,7 +21,7 @@ into the browser, it will just work!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  read -p '↘️  Token | PRESS [ENTER]: ' token < /dev/tty
+  read -r -p '↘️  Token | PRESS [ENTER]: ' token < /dev/tty
   if [[ "$token" == "exit" || "$token" == "Exit" || "$token" == "EXIT" || "$token" == "z" || "$token" == "Z" ]]; then clonestart; fi
   curl --request POST --data "code=$token&client_id=$uploaderpublic&client_secret=$uploadersecret&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code" https://accounts.google.com/o/oauth2/token > /opt/mhs/etc/mhs/uploader.info
 

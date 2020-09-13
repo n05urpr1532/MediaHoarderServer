@@ -30,7 +30,7 @@ mainstart1() {
 EOF
 
   # Standby
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) bash /opt/mhs/lib/core/pgbox/core/core.sh ;;
@@ -60,7 +60,7 @@ mainstart2() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
 
-  read -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
+  read -r -p '↘️  Type Number | Press [ENTER]: ' typed < /dev/tty
 
   case $typed in
     1) bash /opt/mhs/lib/core/pgbox/gce/gcecore.sh ;;
